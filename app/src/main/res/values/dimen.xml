@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="password_dot">32dp</dimen>
+    <dimen name="action_button">16sp</dimen>
+    <dimen name="label">16sp</dimen>
+    <dimen name="small">12sp</dimen>
+    <dimen name="mimdle">16sp</dimen>
+    <dimen name="large">18sp</dimen>
+    <dimen name="larger">20sp</dimen>
+</resources>

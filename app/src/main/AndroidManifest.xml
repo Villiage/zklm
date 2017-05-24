@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fxlc.zklm">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".activity.HomeActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".test.IDcardTestActivity"
+            android:label="实名认证"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.ChangePhoneActivity" />
+        <activity
+            android:name=".test.TestActivity"
+            android:label="Contact"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".test.PlaceTestActivity" />
+        <activity android:name=".test.CarNoActivity" />
+        <activity
+            android:name=".test.ContactActivity"
+            android:label="联系人"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.TransferDetailActivity" />
+        <activity android:name=".activity.PayBillActivity" />
+        <activity android:name=".activity.ActivateActivity" />
+        <activity android:name=".activity.AuditActivity" />
+        <activity android:name=".activity.AddCarActivity" />
+        <activity android:name=".activity.AddpicActivity" />
+        <activity android:name=".activity.UInfoActivity" />
+        <activity android:name=".activity.EntryActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".test.ScanQRActivity" />
+        <activity
+            android:name=".test.CaptureQRActivity"
+            android:clearTaskOnLaunch="true"
+            android:label="二维码扫描"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".test.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".test.DrawerActivity"
+            android:label="@string/title_activity_drawer"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.MyActivity" />
+        <activity
+            android:name=".BaseActivity"
+            android:label="@string/title_activity_base"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".activity.LicenseActivity" />
+        <activity android:name=".activity.MycarActivity" />
+        <activity android:name=".activity.FeedbackActivity"></activity>
+    </application>
+
+</manifest>

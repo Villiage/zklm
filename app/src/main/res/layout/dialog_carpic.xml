@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingTop="@dimen/vertical_margin"
+        android:text="上传真实的行驶证照片"
+        android:textColor="@color/text_mark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingTop="5dp"
+        android:text="以下图片可通过审核"
+        android:textColor="@color/assist" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/vertical_margin"
+        android:text="从相册中选取"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/mimdle" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/vertical_margin"
+        android:text="取消"
+        android:layout_marginTop="1dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/mimdle" />
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg"
+    android:orientation="vertical"
+    tools:context="com.fxlc.zklm.activity.FeedbackActivity">
+    <include layout="@layout/activity_title"/>
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:background="@drawable/textarea_bg"
+        android:gravity="start"
+        android:hint="请留下您的宝贵意见或建议，我们将努力改进。"
+        android:textColorHint="@color/text_tip"
+        android:maxLines="10"
+        android:minLines="8" />
+</LinearLayout>
