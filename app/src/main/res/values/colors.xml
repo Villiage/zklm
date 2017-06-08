@@ -6,16 +6,20 @@
     <color name="text_primary">#0c2134</color>
     <color name="text_secondary">#8291a5</color>
     <color name="text_mark">#464646</color>
+
     <color name="text_tip">#bcbcbc</color>
     <color name="text_anim">#c7c7c7</color>
     <color name="home_bg">#f1f5f8</color>
     <color name="white">#ffffff</color>
     <color name="black">#000</color>
     <color name="lighter_gray">#ddd</color>
+    <color name="text_blue">#00afff</color>
     <color name="darker_gray">#aaa</color>
     <color name="tool_item_label">#333333</color>
     <color name="tool_item_info">#888888</color>
      <color name="gradiant_start">#00b4ff</color>
      <color name="gradiant_end">#0084ff</color>
      <color name="assist">#fe7208</color>
+
+     <color name="divider">#e3e3e3</color>
 </resources>

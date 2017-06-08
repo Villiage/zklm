@@ -29,7 +29,7 @@ public class CycleWheelView extends ListView {
     public static final int showCount = 5;
     private int freeScrollTime = 200;//ms
     private int itemHeight;
-    private int selectIndex = 0;
+    private int selectIndex = -1;
     private List<String> mData;
     private WheelViewAdapter mAdapter;
     private boolean cycleEnable;
@@ -70,14 +70,15 @@ public class CycleWheelView extends ListView {
         }
     }
 
+
     @Override
     public void fling(int velocityY) {
-        super.fling(velocityY/5);
+        super.fling(velocityY/10);
     }
 
     public void setData(List<String> data) {
         this.mData = data;
-        mAdapter = new WheelViewAdapter(data, showCount, true);
+        mAdapter = new WheelViewAdapter(data, showCount, cycleEnable);
         setAdapter(mAdapter);
 
     }
@@ -99,7 +100,7 @@ public class CycleWheelView extends ListView {
 
         @Override
         public void onScroll(AbsListView absListView, int firstVisiableItem, int visiableItemCount, int totalItemCount) {
-            refresh(firstVisiableItem,visiableItemCount,totalItemCount);
+            refresh(firstVisiableItem,visiableItemCount);
         }
     };
 
@@ -122,7 +123,8 @@ public class CycleWheelView extends ListView {
            }
     }
 
-    public void refresh(int firstVisiableItem, int visiableItemCount, int totalItemCount) {
+    public void refresh(int firstVisiableItem, int visiableItemCount) {
+        Log.d("cyd","refresh");
         if (getChildAt(0) == null) {
             return;
         }
@@ -140,8 +142,8 @@ public class CycleWheelView extends ListView {
         for(int i = 0;i<  visiableItemCount;i++){
             TextView txt = (TextView) getChildAt(i);
               if( firstVisiableItem + i == position){
-                  txt.setTextColor(Color.GREEN);
-              }else txt.setTextColor(Color.DKGRAY);
+                  txt.setTextColor(Color.DKGRAY);
+              }else txt.setTextColor(Color.LTGRAY);
         }
 
     }

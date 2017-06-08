@@ -1,0 +1,112 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg"
+
+    android:orientation="vertical"
+    tools:context="com.fxlc.zklm.activity.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        tools:context="com.fxlc.zklm.activity.LoginActivity">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="60dp"
+            android:src="@drawable/logo" />
+
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/edt_bg"
+            android:drawableLeft="@drawable/login_name"
+            android:drawablePadding="10dp"
+            android:hint="请输入您的手机号"
+            android:inputType="phone"
+            android:maxLines="1" />
+
+
+        <EditText
+            android:id="@+id/verifyCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edt_bg"
+            android:drawableLeft="@drawable/login_password"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:hint="请输入您的验证码"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="ok"
+            android:imeOptions="actionUnspecified"
+            android:maxLines="1" />
+     <EditText
+            android:id="@+id/pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edt_bg"
+            android:drawableLeft="@drawable/login_password"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:drawableRight="@drawable/login_xs"
+            android:hint="请输入您的密码"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="ok"
+            android:imeOptions="actionUnspecified"
+            android:maxLines="1" />
+  <EditText
+            android:id="@+id/inviteCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edt_bg"
+            android:drawableLeft="@drawable/login_password"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:hint="请输入您的邀请码  "
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="ok"
+            android:imeOptions="actionUnspecified"
+            android:maxLines="1" />
+
+
+        <TextView
+            android:id="@+id/loginBt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/login_bt_bg"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/action_sign_up"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="5dp"
+             android:text="*点击注册表示同意《用户协议》"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_bottom" />
+</LinearLayout>

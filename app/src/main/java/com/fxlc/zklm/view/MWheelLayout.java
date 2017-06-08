@@ -12,6 +12,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.fxlc.zklm.R;
+
 /**
  * Created by cyd on 2017/3/23.
  */
@@ -39,7 +41,7 @@ public class MWheelLayout extends FrameLayout {
         final FrameLayout.LayoutParams itemP = new FrameLayout.LayoutParams(-1, 0);
         itemP.gravity = Gravity.CENTER_VERTICAL;
         markView = new View(getContext());
-        markView.setBackgroundColor(Color.RED);
+        markView.setBackgroundResource(R.drawable.line_stroke);
         addView(markView, itemP);
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-1, -2);

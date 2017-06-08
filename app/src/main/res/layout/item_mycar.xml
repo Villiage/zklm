@@ -10,16 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="车牌号:晋D67834"
+        android:layout_centerVertical="true"
         android:textColor="@color/text_primary"
         android:textSize="@dimen/label" />
 
-    <TextView
-        android:id="@+id/car_brand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/car_id"
-        android:layout_marginTop="5dp"
-        android:text="车品牌:解放" />
+
 
     <ImageView
         android:id="@+id/jt"

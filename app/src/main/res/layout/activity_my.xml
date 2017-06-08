@@ -64,7 +64,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/option_margin"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:paddingBottom="@dimen/vertical_margin"
         android:paddingLeft="@dimen/activity_margin"
@@ -89,7 +89,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:paddingBottom="@dimen/vertical_margin"
         android:paddingLeft="@dimen/activity_margin"
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:drawableLeft="@drawable/per_wallet"
+            android:drawableLeft="@drawable/per_contact"
             android:gravity="center_vertical"
             android:drawablePadding="@dimen/activity_margin"
             android:text="联系人" />
@@ -125,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:drawableLeft="@drawable/per_wallet"
+            android:drawableLeft="@drawable/per_car"
             android:gravity="center_vertical"
             android:drawablePadding="@dimen/activity_margin"
             android:text="车辆" />
@@ -141,7 +141,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/option_margin"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:paddingBottom="@dimen/vertical_margin"
         android:paddingLeft="@dimen/activity_margin"

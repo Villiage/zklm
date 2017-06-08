@@ -5,70 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.fxlc.zklm.SettingActivity">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height"
-        android:background="@color/colorPrimary">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/back" />
-
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/page_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="设置" />
-    </FrameLayout>
+    android:background="@color/home_bg"
+    tools:context="com.fxlc.zklm.activity.SettingActivity">
+    <include layout="@layout/activity_title"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginTop="@dimen/activity_margin"
         android:background="@color/white"
-        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingBottom="@dimen/activity_margin"
         android:paddingLeft="@dimen/activity_margin"
         android:paddingRight="@dimen/activity_margin"
-        android:paddingTop="@dimen/vertical_margin">
+        android:paddingTop="@dimen/activity_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/mimdle"
             android:gravity="center_vertical"
             android:drawablePadding="@dimen/activity_margin"
             android:text="清理缓存" />
-
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="@drawable/jt_blue" />
+            android:text="0.0M"
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/jt_blue" />
+
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginTop="@dimen/activity_margin"
         android:background="@color/white"
-        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingBottom="@dimen/activity_margin"
         android:paddingLeft="@dimen/activity_margin"
         android:paddingRight="@dimen/activity_margin"
-        android:paddingTop="@dimen/vertical_margin">
+        android:paddingTop="@dimen/activity_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:textColor="@color/text_primary"
             android:gravity="center_vertical"
-
+            android:textSize="@dimen/mimdle"
             android:text="留言反馈" />
 
         <ImageView
@@ -80,21 +65,22 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginTop="@dimen/activity_margin"
         android:background="@color/white"
-        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingBottom="@dimen/activity_margin"
         android:paddingLeft="@dimen/activity_margin"
         android:paddingRight="@dimen/activity_margin"
-        android:paddingTop="@dimen/vertical_margin">
+        android:paddingTop="@dimen/activity_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:textColor="@color/text_primary"
             android:gravity="center_vertical"
+            android:textSize="@dimen/mimdle"
             android:drawablePadding="@dimen/activity_margin"
-            android:text="服务协商" />
+            android:text="服务协议" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -107,19 +93,20 @@
         android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/option_margin"
         android:background="@color/white"
-        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingBottom="@dimen/activity_margin"
         android:paddingLeft="@dimen/activity_margin"
         android:paddingRight="@dimen/activity_margin"
-        android:paddingTop="@dimen/vertical_margin">
+        android:paddingTop="@dimen/activity_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:textColor="@color/text_primary"
             android:gravity="center_vertical"
             android:drawablePadding="@dimen/activity_margin"
-            android:text="钱包" />
+            android:textSize="@dimen/mimdle"
+            android:text="关于我们" />
 
         <ImageView
             android:layout_width="wrap_content"

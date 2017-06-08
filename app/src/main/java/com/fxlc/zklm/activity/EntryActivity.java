@@ -7,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.fxlc.zklm.R;
-import com.fxlc.zklm.test.DrawerActivity;
 import com.fxlc.zklm.test.IDcardTestActivity;
 import com.fxlc.zklm.test.ScanQRActivity;
-import com.fxlc.zklm.test.ScrollingActivity;
 import com.fxlc.zklm.test.TestActivity;
 
 public class EntryActivity extends AppCompatActivity {
@@ -83,29 +81,39 @@ public class EntryActivity extends AppCompatActivity {
 
             }
         });
-        findViewById(R.id.collapsing).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent();
-                it.setClass(context, ScrollingActivity.class);
-                startActivity(it);
 
-            }
-        });
-        findViewById(R.id.drawer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent();
-                it.setClass(context, DrawerActivity.class);
-                startActivity(it);
 
-            }
-        });
         findViewById(R.id.mycar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent();
                 it.setClass(context, MycarActivity.class);
+                startActivity(it);
+
+            }
+        });   findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent();
+                it.setClass(context, ShareActivity.class);
+                startActivity(it);
+
+            }
+        });
+        findViewById(R.id.gallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent();
+                it.setClass(context, PickImgActivity.class);
+                startActivity(it);
+
+            }
+        });
+        findViewById(R.id.setting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent();
+                it.setClass(context, SettingActivity.class);
                 startActivity(it);
 
             }

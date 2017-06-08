@@ -9,71 +9,88 @@
 
     <include layout="@layout/activity_title" />
 
-     <FrameLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:background="@color/white"
-         android:padding="10dp">
-         <ImageView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center_horizontal"
-             android:background="@drawable/add_car_one"/>
-     </FrameLayout>
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="10dp"
-        android:layout_marginTop="@dimen/option_margin">
+        android:padding="10dp">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_mark"
-            android:text="选择品牌车型" />
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/add_car_one" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/getBrand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/option_margin"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择品牌车型"
+            android:textColor="@color/text_mark" />
 
 
         <TextView
+            android:id="@+id/brand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/jt_gray" />
+            android:drawablePadding="10dp"
+            android:drawableRight="@drawable/jt_gray" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp" />
+
     <RelativeLayout
+        android:id="@+id/getcarno"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:background="@color/white"
-        android:padding="10dp">
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="输入车牌号"
-            android:textColor="@color/text_mark"/>
+            android:textColor="@color/text_mark" />
 
 
         <TextView
+            android:id="@+id/carno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/jt_gray" />
+            android:drawableRight="@drawable/jt_gray" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp" />
+
     <RelativeLayout
+        android:id="@+id/get_drive_license"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:background="@color/white"
-        android:padding="10dp">
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_mark"
-            android:text="上传行使证照片" />
+            android:text="上传行使证照片"
+            android:textColor="@color/text_mark" />
 
 
         <ImageView
@@ -83,18 +100,23 @@
             android:background="@drawable/jt_gray" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp" />
+
     <RelativeLayout
+        android:id="@+id/get_manage_license"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/white"
-        android:padding="10dp">
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_mark"
-            android:text="上传营运证" />
+            android:text="上传营运证"
+            android:textColor="@color/text_mark" />
 
 
         <ImageView
@@ -106,17 +128,17 @@
 
 
     <TextView
-        android:id="@+id/verify"
+        android:id="@+id/next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="50dp"
+        android:background="@drawable/bg_gradient"
         android:gravity="center"
         android:padding="10dp"
-        android:textSize="@dimen/action_button"
-        android:background="@drawable/bg_gradient"
+        android:text="下一步"
         android:textColor="@color/white"
-        android:text="下一步" />
+        android:textSize="@dimen/action_button" />
 </LinearLayout>

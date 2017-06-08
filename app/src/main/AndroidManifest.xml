@@ -20,11 +20,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".activity.HomeActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1106195082" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".activity.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -66,23 +79,26 @@
             android:clearTaskOnLaunch="true"
             android:label="二维码扫描"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".test.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".test.DrawerActivity"
-            android:label="@string/title_activity_drawer"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.MyActivity" />
         <activity
             android:name=".BaseActivity"
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SettingActivity" />
+        <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.LicenseActivity" />
         <activity android:name=".activity.MycarActivity" />
-        <activity android:name=".activity.FeedbackActivity"></activity>
+        <activity android:name=".activity.FeedbackActivity" />
+        <activity android:name=".activity.ShareActivity" />
+        <activity android:name=".activity.PickImgActivity" />
+        <activity android:name=".activity.PhotoActivity" />
+        <activity android:name=".activity.RegistActivity" />
+        <activity android:name=".activity.ChangePwdActivity" />
+        <activity android:name=".activity.BrandActivity" />
+        <activity android:name=".activity.HandCarActivity" />
+        <activity android:name=".activity.MsgActivity" />
+        <activity android:name=".activity.MyWalletActivity" />
+        <activity android:name=".activity.MyBorrowActivity" />
+        <activity android:name=".activity.PayDetailActivity"></activity>
     </application>
 
 </manifest>

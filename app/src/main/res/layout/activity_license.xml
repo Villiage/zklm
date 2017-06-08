@@ -12,12 +12,6 @@
 
 
 
-
-
-
-
-
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
@@ -79,7 +73,6 @@
             android:gravity="center_vertical"
             android:textColor="@color/text_mark"
             android:textSize="@dimen/label"
-            android:drawablePadding="@dimen/activity_margin"
             android:text="公司名称" />
 
         <EditText
@@ -92,11 +85,15 @@
             android:textColorHint="@color/text_tip"
             android:drawableRight="@drawable/jt_blue" />
     </FrameLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp" />
+
     <RelativeLayout
         android:id="@+id/license"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+
         android:background="@color/white"
         android:paddingBottom="@dimen/vertical_margin"
         android:paddingLeft="@dimen/activity_margin"

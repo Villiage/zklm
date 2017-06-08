@@ -6,10 +6,11 @@
         android:background="@color/colorPrimary">
 
         <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
+            android:padding="15dp"
             android:src="@drawable/back" />
 
 
