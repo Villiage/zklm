@@ -8,28 +8,9 @@
     android:background="@color/home_bg"
     tools:context="com.fxlc.zklm.activity.MyActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height"
-        android:background="@color/colorPrimary">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/back" />
-
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/page_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="我的" />
-    </FrameLayout>
-
+    <include layout="@layout/activity_title"/>
     <RelativeLayout
+        android:id="@+id/uinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -39,17 +20,17 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="王某某"
+            android:text="未认证"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/label" />
 
         <TextView
-            android:id="@+id/tel"
+            android:id="@+id/mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_marginTop="8dp"
-            android:text="15645434521"
+            android:text=""
             android:textColor="@color/text_secondary" />
 
         <ImageView
@@ -62,6 +43,7 @@
 
 
     <FrameLayout
+        android:id="@+id/wallet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -87,6 +69,7 @@
             android:background="@drawable/jt_blue" />
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -112,6 +95,7 @@
             android:background="@drawable/jt_blue" />
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/car"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -139,6 +123,7 @@
 
 
     <FrameLayout
+        android:id="@+id/setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

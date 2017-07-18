@@ -118,9 +118,12 @@ public class CycleWheelView extends ListView {
                     smoothScrollBy((int)(itemHeight + deltaY), 0);
                 }
             }
-           if(listener != null){
-               listener.onSelect(selectIndex);
-           }
+
+    }
+
+
+    public int getSelectIndex() {
+        return selectIndex;
     }
 
     public void refresh(int firstVisiableItem, int visiableItemCount) {
@@ -156,15 +159,7 @@ public class CycleWheelView extends ListView {
     public interface ItemHeightLisener {
         void onMeasure(int itemHeight);
     }
-    private OnSelectListener listener;
-
-    public interface OnSelectListener {
-        void onSelect(int position);
-    }
 
 
-    public void setOnSelectListener(OnSelectListener listener) {
-        this.listener = listener;
 
-    }
 }

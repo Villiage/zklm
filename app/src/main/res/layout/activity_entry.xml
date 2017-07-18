@@ -21,11 +21,6 @@
             android:layout_height="wrap_content"
             android:text="Contact" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Activate" />
 
         <Button
             android:id="@+id/button4"
@@ -57,17 +52,8 @@
             android:layout_height="wrap_content"
             android:text="QRCode" />
 
-        <Button
-            android:id="@+id/collapsing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Collapsing" />
 
-        <Button
-            android:id="@+id/drawer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Drawer" />
+
 
         <Button
             android:id="@+id/mycar"
@@ -80,14 +66,24 @@
             android:layout_height="wrap_content"
             android:text="Share" />
         <Button
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Setting" />
+        <Button
             android:id="@+id/gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gallery" />
         <Button
-            android:id="@+id/setting"
+            android:id="@+id/my"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Setting" />
+            android:text="My" />
+        <Button
+            android:id="@+id/test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test" />
     </LinearLayout>
 </ScrollView>

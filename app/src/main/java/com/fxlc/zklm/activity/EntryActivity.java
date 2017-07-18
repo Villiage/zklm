@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fxlc.zklm.R;
+import com.fxlc.zklm.bean.Contact;
 import com.fxlc.zklm.test.IDcardTestActivity;
+import com.fxlc.zklm.test.PlaceTestActivity;
 import com.fxlc.zklm.test.ScanQRActivity;
+import com.fxlc.zklm.test.SqlActivity;
 import com.fxlc.zklm.test.TestActivity;
 
 public class EntryActivity extends AppCompatActivity {
@@ -22,7 +26,7 @@ public class EntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent();
-                it.setClass(context, IDcardTestActivity.class);
+                it.setClass(context, IDcardAuditActivity.class);
                 startActivity(it);
 
             }
@@ -31,20 +35,16 @@ public class EntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent();
-                it.setClass(context, TestActivity.class);
+                Contact contact = new Contact();
+                contact.setName("常亚东");
+                contact.setPhone("13256489546");
+                it.setClass(context, ContactInfoActivity.class);
+                it.putExtra("contact",contact);
                 startActivity(it);
 
             }
         });
-        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent();
-                it.setClass(context, ActivateActivity.class);
-                startActivity(it);
 
-            }
-        });
         findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +72,16 @@ public class EntryActivity extends AppCompatActivity {
 
             }
         });
+        findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent();
+                it.setClass(context, PayActivity.class);
+                startActivity(it);
+
+            }
+        });
+
         findViewById(R.id.qr).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +101,8 @@ public class EntryActivity extends AppCompatActivity {
                 startActivity(it);
 
             }
-        });   findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
+        });
+        findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent();
@@ -114,6 +125,24 @@ public class EntryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent it = new Intent();
                 it.setClass(context, SettingActivity.class);
+                startActivity(it);
+
+            }
+        });
+        findViewById(R.id.my).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent();
+                it.setClass(context, MyActivity.class);
+                startActivity(it);
+
+            }
+        });
+        findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent();
+                it.setClass(context, GuideActivity.class);
                 startActivity(it);
 
             }

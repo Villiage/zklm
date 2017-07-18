@@ -100,6 +100,7 @@
                 android:drawablePadding="5dp"
                 android:text="QQ好友"/>
             <TextView
+                android:id="@+id/share_timeline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/invite_circle"
@@ -109,6 +110,7 @@
                 android:text="朋友圈"/>
 
             <TextView
+                android:id="@+id/share_wx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/invit_wechat"

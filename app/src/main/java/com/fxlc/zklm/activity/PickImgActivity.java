@@ -30,15 +30,18 @@ public class PickImgActivity extends BaseActivity {
     private Context context;
     private ArrayList<MediaStoreData> selList = new ArrayList<>();
     private int maxSize = 6;
+    private int minSize = 0;
     private View okView;
     private TextView tipTxt;
-    private  String tip = "已选择*/6张";
+    private  String tip = "已选择*/#张";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
         context = this;
-
+        maxSize = getIntent().getIntExtra("max",6);
+        minSize = getIntent().getIntExtra("min",0);
+        tip = tip.replace("#",maxSize + "");
         tipTxt = (TextView) findViewById(R.id.seltip);
         okView = findViewById(R.id.ok);
         gridView = (GridView) findViewById(R.id.gird);
@@ -57,10 +60,14 @@ public class PickImgActivity extends BaseActivity {
         okView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent();
-                it.putParcelableArrayListExtra("selList",selList);
-                setResult(100,it);
-                finish();
+                if (selList.size() >= minSize) {
+                    Intent it = new Intent();
+                    it.putParcelableArrayListExtra("imgs", selList);
+                    setResult(RESULT_OK, it);
+                    finish();
+                }else {
+                   toast("至少选择"+ minSize + "张照片");
+                }
             }
         });
     }

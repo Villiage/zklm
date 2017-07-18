@@ -22,6 +22,12 @@ public class DisplayUtil {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
+   public static int getScreenWidth(Context context){
+       DisplayMetrics dm = context.getResources().getDisplayMetrics();
+       int width = dm.widthPixels;
+
+       return width;
+   }
 
     public static int px2dp(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;

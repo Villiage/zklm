@@ -10,7 +10,7 @@
     <include layout="@layout/activity_title"/>
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/vertical_margin"
@@ -20,4 +20,18 @@
         android:textColorHint="@color/text_tip"
         android:maxLines="10"
         android:minLines="8" />
+    <TextView
+        android:id="@+id/action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bg_gradient"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="@dimen/action_button" />
 </LinearLayout>

@@ -57,6 +57,7 @@ public class PhotoActivity extends AppCompatActivity {
             // TODO Auto-generated method stub
             ImageView photoView = new ImageView(container.getContext());
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(-1,-1);
+            Log.d("photourl",datas.get(position).uri.getPath());
             Glide.with(context).load(datas.get(position).uri).fitCenter().into(photoView);
 
             container.addView(photoView,layoutParams);

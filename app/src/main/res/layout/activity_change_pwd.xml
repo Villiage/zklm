@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/home_bg"
     android:orientation="vertical"
-    tools:context="com.fxlc.zklm.activity.ChangePwdActivity">
+    tools:context="com.fxlc.zklm.activity.SetPwdActivity">
 
     <include layout="@layout/activity_title" />
 
@@ -45,6 +45,7 @@
         android:paddingBottom="10dp">
 
         <EditText
+            android:id="@+id/verfiy_code"
             android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,6 +57,7 @@
             android:textSize="@dimen/mimdle" />
 
         <TextView
+            android:id="@+id/getverify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -71,54 +73,43 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
-        android:background="@color/white"
-        android:padding="@dimen/activity_margin">
+        android:layout_height="wrap_content">
 
         <EditText
-            android:layout_width="wrap_content"
+            android:id="@+id/pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:background="@color/white"
+            android:padding="@dimen/activity_margin"
+            android:layout_gravity="center_vertical"
+            android:drawablePadding="@dimen/activity_margin"
+            android:gravity="center_vertical"
+            android:hint="输入新的密码"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/mimdle" />
+
+
+    </FrameLayout>
+
+        <EditText
+            android:id="@+id/repwd"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:drawablePadding="@dimen/activity_margin"
             android:gravity="center_vertical"
-            android:background="@null"
-            android:hint="再次输入新的登陆密码"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:background="@color/white"
+            android:padding="@dimen/activity_margin"
+            android:hint="再次输入新的密码"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/mimdle" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@drawable/jt_blue" />
-    </FrameLayout>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
-        android:background="@color/white"
-        android:padding="@dimen/activity_margin">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:drawablePadding="@dimen/activity_margin"
-            android:gravity="center_vertical"
-            android:background="@null"
-            android:hint="再次输入新的登陆密码"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/mimdle" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@drawable/jt_blue" />
-    </FrameLayout>
     <TextView
-        android:id="@+id/verify"
+        android:id="@+id/action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

@@ -14,17 +14,21 @@
         android:background="@color/colorPrimary">
 
         <ImageView
+            android:id="@+id/my"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:src="@drawable/home_wo" />
 
         <ImageView
+            android:id="@+id/msg"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:src="@drawable/home_new" />
 
         <TextView
@@ -49,26 +53,40 @@
             android:text="可用额度(元)"
             android:textColor="@color/white" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/usable_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:text="0"/>
+
+            <ImageView
+                android:id="@+id/toIdcard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/qurenz" />
+        </LinearLayout>
+
+
         <TextView
             android:id="@+id/total_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:drawableRight="@drawable/qurenz"
-            android:text="100000"
-            android:textColor="@color/white"
-            android:textSize="30sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:text="总额度10000元"
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/upgrade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -97,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="+ 收款人"
+            android:text="+ 联系人"
             android:textColor="#00afff" />
     </FrameLayout>
 
@@ -111,9 +129,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawableTop="@drawable/home_ts"
-            android:text="添加收款人进行结算"
+            android:text="添加人进行结算"
             android:textColor="@color/darker_gray" />
 
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView>
 
     </FrameLayout>
 </LinearLayout>

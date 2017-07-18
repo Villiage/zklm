@@ -3,10 +3,10 @@ package com.fxlc.zklm.test;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,12 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.IDcard;
 import com.fxlc.zklm.util.BitmapUtil;
 import com.fxlc.zklm.util.DialogUtil;
 import com.fxlc.zklm.util.FileUtil;
-import com.fxlc.zklm.util.TransformationUtils;
 import com.fxlc.zklm.util.UriUtil;
 
 import org.json.JSONArray;
@@ -35,10 +35,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,13 +50,15 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
     public static int CAPTURE_CODE = 101;
     public static String captureTempFile = "capture_temp.jpg";
     public File captureFile;
-    private String photoPath;
-    private ImageView idcardImg;
-    private TextView idNoTxt, realNameTxt;
+    private String facePath,backPath;
+    private  boolean faceSuccess,backSuccess;
+    private ImageView faceImg, backImg;
+    private int type = 1;
+    private TextView idNoTxt, realNameTxt, issueTxt;
     private View verify;
     private ProgressDialog dialog;
-    private boolean verifySuccess;
-    private Bitmap bitmap;
+
+    private Context context;
     private Bitmap.CompressFormat format;
     public static final int IDcard_REQURIE_WIDTH = 800;
     public static final int IDcard_REQURIE_HEIGHT = 800;
@@ -68,44 +66,45 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 0) {
+            if (msg.what == 1) {
                 String dataValue = (String) msg.obj;
                 JSONObject outputObj = null;
                 try {
                     outputObj = new JSONObject(dataValue);
                     if (outputObj.getBoolean("success")) {
-
+                        faceSuccess = true;
                         idcard1.setName(outputObj.getString("name"));
                         idcard1.setNum(outputObj.getString("num"));
+
                         idNoTxt.setText(idcard1.getNum());
                         realNameTxt.setText(idcard1.getName());
-//                        checkName();
                     } else {
 
-                        Log.d("Card","照片识别失败，请重新上传" + "\n");
+                        Log.d("Card", "照片识别失败，请重新上传" + "\n");
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
-            } else if (msg.what == 1) {
-                String result = (String) msg.obj;
+            } else if (msg.what == 2) {
+                String dataValue = (String) msg.obj;
+                JSONObject outputObj = null;
                 try {
-                    JSONObject obj = new JSONObject(result);
-                    int code = obj.getInt("code");
-                    if (code == 1) {
+                    outputObj = new JSONObject(dataValue);
+                    if (outputObj.getBoolean("success")) {
+                         backSuccess = true;
+                        idcard1.setIssue(outputObj.getString("issue"));
+                        issueTxt.setText(idcard1.getIssue());
+                    } else {
 
-                        idcard2.setAddress(obj.getString("address"));
-                        idcard2.setSex(obj.getString("sex"));
-                        idcard2.setBirth(obj.getString("birthday"));
-
-                        verifySuccess = true;
+                        Log.d("Card", "照片识别失败，请重新上传" + "\n");
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
 
         }
@@ -114,20 +113,24 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_idcard_test);
-        idcardImg = (ImageView) findViewById(R.id.img_face);
-        idcardImg.setOnClickListener(this);
+
+        faceImg = (ImageView) findViewById(R.id.faceImg);
+        backImg = (ImageView) findViewById(R.id.backImg);
+        findViewById(R.id.img_face).setOnClickListener(this);
+        findViewById(R.id.img_back).setOnClickListener(this);
 
         verify = findViewById(R.id.verify);
         verify.setOnClickListener(this);
 
         idNoTxt = (TextView) findViewById(R.id.id_no);
         realNameTxt = (TextView) findViewById(R.id.realname);
-
+        issueTxt = (TextView) findViewById(R.id.issue);
 
         dialog = new ProgressDialog(this);
         dialog.setCanceledOnTouchOutside(false);
-
+        choiceDialog = DialogUtil.createDialog(IDcardTestActivity.this, new String[]{"相册", "拍照"}, this);
     }
 
 
@@ -146,16 +149,33 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
                             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
                 } else {
                     //权限已经被授予，在这里直接写要执行的相应方法即可
-                    choiceDialog = DialogUtil.createDialog(IDcardTestActivity.this, new String[]{"相册", "拍照"}, this);
+                    type = 1;
+                    choiceDialog.show();
+                }
+
+                break;
+            case R.id.img_back:
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
+                } else {
+                    //权限已经被授予，在这里直接写要执行的相应方法即可
+                    type = 2;
                     choiceDialog.show();
                 }
 
                 break;
 
             case R.id.verify:
-                readCard();
+                  if (faceSuccess && backSuccess)
+                      submit();
+                else
+                    Toast.makeText(context,"照片信息不完整或不清晰，请重新选取",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.dialog_item1:
+
                 choiceDialog.dismiss();
                 Intent album = new Intent(Intent.ACTION_PICK);
                 album.setType("image/*");
@@ -177,16 +197,17 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
     }
 
     IDcard idcard1 = new IDcard();
-    IDcard idcard2 = new IDcard();
 
-    public void readCard() {
-        dialog.setMessage("正在读取照片信息,请稍侯...");
+
+    public void readCard(String photoPath) {
+        dialog.setMessage("正在验证照片,请稍侯...");
         dialog.show();
 
         final String host = "http://dm-51.data.aliyun.com";
         final String path = "/rest/160601/ocr/ocr_idcard.json";
         final String appcode = "60091d0fb1a648459827272c0abf7909";
-        byte[] content = BitmapUtil.bitmapToByte(bitmap, format);
+
+        byte[] content = BitmapUtil.cpPicToByte(photoPath,100);
         String imgBase64 = android.util.Base64.encodeToString(content, android.util.Base64.DEFAULT);
 
         final JSONObject requestObj = new JSONObject();
@@ -194,7 +215,10 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
             JSONObject configObj = new JSONObject();
             JSONObject obj = new JSONObject();
             JSONArray inputArray = new JSONArray();
-            configObj.put("side", "face");
+            if (type == 1)
+                configObj.put("side", "face");
+            else
+                configObj.put("side", "back");
             obj.put("image", getParam(50, imgBase64));
             obj.put("configure", getParam(50, configObj.toString()));
             inputArray.put(obj);
@@ -211,16 +235,20 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .post(requestBody)
                 .build();
+        Log.d(TAG,request.toString());
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 dialog.dismiss();
+                Log.d(TAG,  "iresponse:" +e.getMessage());
                 Toast.makeText(IDcardTestActivity.this, "验证失败", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 dialog.dismiss();
+                Log.d(TAG, "response:" + response.code());
+                Toast.makeText(IDcardTestActivity.this, response.code() + "", Toast.LENGTH_SHORT).show();
                 if (response.code() == 200) {
                     try {
                         String result = response.body().string();
@@ -228,9 +256,9 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
                         JSONObject obj = new JSONObject(result);
                         JSONArray outputs = obj.getJSONArray("outputs");
                         String outputValue = outputs.getJSONObject(0).optJSONObject("outputValue").getString("dataValue");
-                        Log.d(TAG, outputValue);
+
                         Message msg = Message.obtain();
-                        msg.what = 0;
+                        msg.what = type;
                         msg.obj = outputValue;
                         handler.sendMessage(msg);
                     } catch (JSONException e) {
@@ -246,47 +274,10 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
 
 
     }
-
-    public void checkName() {
-        dialog.setMessage("正在验证姓名和身份证号,请稍候...");
-        dialog.show();
-        String url = "http://aliyun.id98.cn/idcard";
-        String appcode = "60091d0fb1a648459827272c0abf7909";
-        Map<String, String> querys = new HashMap<String, String>();
-        querys.put("name", realNameTxt.getText().toString());
-        querys.put("cardno", idNoTxt.getText().toString());
-
-
-        final Request request = new Request.Builder()
-                .url(url + "?" + buildParamString(querys))
-                .header("Authorization", "APPCODE " + appcode)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                dialog.dismiss();
-
-                if (response.code() == 200) {
-                    String result = response.body().string();
-                    Message msg = Message.obtain();
-                    msg.what = 1;
-                    msg.obj = result;
-                    handler.sendMessage(msg);
-                } else {
-                    Toast.makeText(IDcardTestActivity.this, "验证失败", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-
+    public void submit(){
 
     }
+
 
     /*
        * 获取参数的json对象
@@ -320,64 +311,33 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (resultCode == RESULT_OK) {
-
+            String photoPath = null;
             if (requestCode == ALBUM_CODE) {
-
                 Uri uri = data.getData();
                 photoPath = UriUtil.getRealFilePath(this, uri);
-
-                getBitmap();
 
             }
             if (requestCode == CAPTURE_CODE) {
                 photoPath = captureFile.getPath();
-                getBitmap();
-
             }
+            Log.d(TAG,photoPath);
+           if (type ==1) {
+               Glide.with(context).load(facePath = photoPath).fitCenter().into(faceImg);
 
-
+           }
+            else if (type== 2) {
+               Glide.with(context).load(backPath = photoPath).fitCenter().into(backImg);
+           }
+            readCard(photoPath);
         }
 
     }
 
-    public void getBitmap() {
-        format = BitmapUtil.getMime(photoPath);
-        bitmap = BitmapUtil.getSmallBitmap(photoPath, IDcard_REQURIE_WIDTH, IDcard_REQURIE_HEIGHT);
 
-        try {
-            ExifInterface exifInterface = new ExifInterface(photoPath);
-            int exifOrientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            int degree = TransformationUtils.getExifOrientationDegrees(exifOrientation);
-            Log.d(TAG, "angle:" + degree);
-            bitmap = TransformationUtils.rotateImage(bitmap, degree);
-            idcardImg.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private String buildParamString(Map<String, String> params) {
-        StringBuilder result = new StringBuilder();
-        if (null != params && params.size() > 0) {
-            boolean isFirst = true;
-            for (String key : params.keySet()) {
-                if (isFirst) {
-                    isFirst = false;
-                } else {
-                    result.append("&");
-                }
-                try {
-                    result.append(key).append("=").append(URLEncoder.encode(params.get(key), "UTF-8"));
-                } catch (UnsupportedEncodingException ex) {
-                    throw new RuntimeException(ex);
-                }
 
-            }
-        }
-
-        return result.toString();
-    }
 
 
 }

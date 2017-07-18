@@ -5,7 +5,6 @@
     android:orientation="horizontal"
     android:paddingBottom="5dp"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     android:paddingTop="5dp">
 
     <LinearLayout
@@ -15,14 +14,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text1"
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:textColor="@color/text_mark"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/text2"
+            android:id="@+id/mobile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
@@ -31,8 +30,10 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/cb_round_off" />
+        android:padding="10dp"
+        android:src="@drawable/cb_contact_sel" />
 </LinearLayout>

@@ -8,18 +8,21 @@
     android:background="@color/home_bg"
     tools:context="com.fxlc.zklm.activity.MyBorrowActivity">
     <include layout="@layout/activity_title"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
 
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:background="@drawable/rd_corners_white"
-            android:padding="15dp"
-            android:layout_margin="10dp">
+            android:padding="15dp">
+
             <TextView
                 android:id="@+id/jke"
                 android:layout_width="wrap_content"
@@ -29,37 +32,37 @@
                 android:text="借款额(元)"
                 android:textColor="@color/text_mark"
                 android:textSize="@dimen/small" />
+
             <TextView
                 android:id="@+id/borrow_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="100,000"
                 android:layout_below="@id/jke"
+                android:layout_gravity="center_horizontal"
                 android:textColor="@color/text_primary"
                 android:textSize="25sp" />
+
             <TextView
                 android:id="@+id/yhe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/borrow_amount"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:layout_below="@id/borrow_amount"
-                android:text="借款额(含利息)"
+                android:text="应还款(含利息)"
                 android:textColor="@color/text_mark"
                 android:textSize="@dimen/small" />
+
             <TextView
                 android:id="@+id/repay_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="100,000"
                 android:layout_below="@id/yhe"
+
+                android:layout_gravity="center_horizontal"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp" />
         </RelativeLayout>
-
-
 
 
         <FrameLayout
@@ -86,7 +89,9 @@
         </FrameLayout>
 
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -108,4 +113,21 @@
             android:text="明细" />
 
     </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bg_gradient"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="去还款"
+        android:textColor="@color/white"
+        android:textSize="@dimen/action_button" />
 </LinearLayout>

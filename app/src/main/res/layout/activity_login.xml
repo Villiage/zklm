@@ -13,8 +13,8 @@
         android:layout_weight="1"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
         tools:context="com.fxlc.zklm.activity.LoginActivity">
 
 
@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:inputType="textPassword"
             android:background="@drawable/edt_bg"
             android:drawableLeft="@drawable/login_password"
             android:drawablePadding="10dp"
@@ -58,7 +59,7 @@
 
 
         <TextView
-            android:id="@+id/loginBt"
+            android:id="@+id/action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -70,11 +71,11 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/reg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
-
             android:text="注册"
             android:textColor="@color/colorPrimary" />
 
@@ -88,11 +89,11 @@
             android:textColor="@color/colorPrimary" />
 
         <TextView
+            android:id="@+id/setpwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-
             android:text="忘记密码"
             android:textColor="@color/colorPrimary" />
 

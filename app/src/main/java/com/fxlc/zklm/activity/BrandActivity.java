@@ -1,6 +1,8 @@
 package com.fxlc.zklm.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -16,59 +18,82 @@ import android.widget.TextView;
 
 import com.fxlc.zklm.BaseActivity;
 import com.fxlc.zklm.R;
+import com.fxlc.zklm.bean.Truck;
+import com.fxlc.zklm.db.MySqliteHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BrandActivity extends BaseActivity implements View.OnClickListener {
-    List<String> brandList;
+
     ListView listView;
-    ListView secListView;
+    ListView stylesView;
     BrandAdapter brandAdapter;
-    List<String> secList;
+    List<String> styles;
     SecAdapter secAdapter;
-    String brand;
+
+    Truck truck;
+    private List<String> brands = new ArrayList<>();
+
+    private MySqliteHelper helper;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        truck = (Truck) getIntent().getSerializableExtra("truck");
+        helper = new MySqliteHelper(this);
         setContentView(R.layout.activity_brand);
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.setScrimColor(Color.TRANSPARENT);
 
         listView = (ListView) findViewById(R.id.list);
         initData();
-        brandAdapter = new BrandAdapter(brandList);
+        brandAdapter = new BrandAdapter(brands);
         listView.setAdapter(brandAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("cyd", "click" + i);
-                brand = brandList.get(i);
+                String brand = brands.get(i);
+                truck.setBrand(brand);
                 if (!drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.openDrawer(Gravity.RIGHT);
-                    initSecData();
-                    secAdapter.setDataList(secList);
-
                 }
+                styles = getStylesByBrand(brand);
+                secAdapter.setDataList(styles);
             }
         });
-        secListView = (ListView) findViewById(R.id.sec_list);
+        stylesView = (ListView) findViewById(R.id.sec_list);
         secAdapter = new SecAdapter();
-        secListView.setAdapter(secAdapter);
-        secListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        stylesView.setAdapter(secAdapter);
+        stylesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent it = new Intent();
-                String result = secList.get(i);
-                Log.d("cyd",result);
-                it.putExtra("brand", result);
-                setResult(RESULT_OK, it);
-                finish();
+                truck.setStyle(styles.get(i));
+                it.putExtra("truck", truck);
+                it.setClass(ctx, TruckActivity.class);
+                startActivityForResult(it, 106);
+
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        title("品牌");
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 106) {
+            truck = (Truck) data.getSerializableExtra("truck");
+            it.putExtra("truck", truck);
+            setResult(RESULT_OK, it);
+            finish();
+        }
     }
 
     @Override
@@ -78,28 +103,36 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        title("品牌");
-    }
+
+
 
     private void initData() {
-        brandList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            brandList.add("一汽解放");
+        db = helper.getWritableDatabase();
+        String sql = "select DISTINCT brand from truck";
+
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+
+            brands.add(cursor.getString(0));
         }
+        cursor.close();
 
     }
 
-    private void initSecData() {
-        secList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            secList.add("一汽解放J6P牵引车");
+    private List<String> getStylesByBrand(String brand) {
+        List<String> styles = new ArrayList<>();
+        db = helper.getWritableDatabase();
+        String sql = "select DISTINCT style from truck where brand = ?";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{brand});
+        while (cursor.moveToNext()) {
+
+            styles.add(cursor.getString(0));
         }
+        cursor.close();
 
+        return styles;
     }
-
 
     class BrandAdapter extends BaseAdapter {
         private List<String> dataList;
@@ -137,9 +170,9 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener 
             txt1 = (TextView) view.findViewById(R.id.text1);
             txt1.setText(brand);
             charTxt.setText("A");
-            if (i > 0 && brand == dataList.get(i - 1)) {
-                charTxt.setVisibility(View.GONE);
-            } else charTxt.setVisibility(View.VISIBLE);
+//            if (i > 0 && brand == dataList.get(i - 1)) {
+            charTxt.setVisibility(View.GONE);
+//            } else charTxt.setVisibility(View.VISIBLE);
 
             return view;
         }
@@ -177,7 +210,8 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener 
                 int id = R.layout.item_brand_sec;
                 view = LayoutInflater.from(viewGroup.getContext()).inflate(id, viewGroup, false);
             }
-
+            txt1 = (TextView) view.findViewById(R.id.text1);
+            txt1.setText(dataList.get(i));
 
             return view;
         }

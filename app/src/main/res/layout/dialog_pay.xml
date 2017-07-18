@@ -28,6 +28,7 @@
        android:layout_height="1px"
        android:background="@color/darker_gray"/>
     <LinearLayout
+        android:id="@+id/pwdGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -118,6 +119,7 @@
         android:id="@+id/number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/lighter_gray"
         android:horizontalSpacing="1px"
         android:numColumns="3"
         android:verticalSpacing="1px">

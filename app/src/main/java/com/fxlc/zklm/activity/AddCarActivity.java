@@ -3,11 +3,14 @@ package com.fxlc.zklm.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,34 +21,49 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.fxlc.zklm.BaseActivity;
 import com.fxlc.zklm.R;
+import com.fxlc.zklm.bean.MediaStoreData;
+import com.fxlc.zklm.bean.Truck;
+import com.fxlc.zklm.db.MySqliteHelper;
+import com.fxlc.zklm.util.BitmapUtil;
+import com.fxlc.zklm.util.DialogUtil;
+import com.fxlc.zklm.util.DisplayUtil;
+import com.fxlc.zklm.util.UriUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class AddCarActivity extends BaseActivity implements View.OnClickListener{
-     View brand;
+public class AddCarActivity extends BaseActivity implements View.OnClickListener {
+
     Context context;
-    Dialog dialog;
+    Dialog carNoDialog, driveDialog, manageDialog;
     TextView brandTx;
     TextView carnoTx;
 
     GridView gridView;
     GridAdapter gridAdapter;
-
+    Truck truck = new Truck();
     StringBuffer sb = new StringBuffer();
-    private static String[] Provinces = {"京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新","苏", "浙", "赣", "鄂","桂",
-            "甘", "晋", "蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼","台"};
+    private static String[] Provinces = {"京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂",
+            "甘", "晋", "蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼", "DeL"};
     private static String[] Nums = new String[10];
     private static String[] Chars = new String[24];
     private static List<String> characters = new ArrayList<>();
+
     int statu;
+    ImageView img1, img2, img3, manageImg;
+    List<MediaStoreData> driveImgList;
+    private String manageImgPath;
+
     static {
         for (int i = 0; i < 10; i++) {
             Nums[i] = String.valueOf(i);
@@ -70,6 +88,7 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
         }
         characters.add("Del");
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,72 +97,117 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
         findViewById(R.id.getBrand).setOnClickListener(this);
         findViewById(R.id.getcarno).setOnClickListener(this);
 
+        img1 = (ImageView) findViewById(R.id.drive1);
+        img2 = (ImageView) findViewById(R.id.drive2);
+        img3 = (ImageView) findViewById(R.id.drive3);
+        manageImg = (ImageView) findViewById(R.id.manageimg);
+
         brandTx = (TextView) findViewById(R.id.brand);
         carnoTx = (TextView) findViewById(R.id.carno);
         findViewById(R.id.get_drive_license).setOnClickListener(this);
         findViewById(R.id.get_manage_license).setOnClickListener(this);
         findViewById(R.id.next).setOnClickListener(this);
         initDialog();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setTitle("品牌");
+        title("添加主车");
     }
-    Intent it = new Intent();
+
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.getBrand:
 
-                it.setClass(context,BrandActivity.class);
-                startActivityForResult(it,101);
+                it.setClass(context, BrandActivity.class);
+                it.putExtra("truck",truck);
+                startActivityForResult(it, 101);
 
                 break;
 
             case R.id.getcarno:
-                dialog.show();
+                carNoDialog.show();
 
                 break;
             case R.id.get_drive_license:
 
-                it.setClass(context,PickImgActivity.class);
-                startActivity(it);
-//                Intent intent = new Intent(Intent.ACTION_PICK);
+                it.setClass(context, PickImgActivity.class);
+                it.putExtra("min", 3);
+                it.putExtra("max", 3);
+                startActivityForResult(it, 102);
+//               Intent intent = new Intent(Intent.ACTION_PICK);
 //              intent.setType("image/*");
-//                startActivityForResult(intent, 100);
+//              startActivityForResult(intent, 100);
 
                 break;
             case R.id.get_manage_license:
-
-                Intent  intent1 = new Intent(Intent.ACTION_GET_CONTENT);
-                intent1.setType("image/*");
-                startActivityForResult(intent1, 101);
+//                it = new Intent(Intent.ACTION_GET_CONTENT);
+                it = new Intent(Intent.ACTION_PICK);
+                it.setType("image/*");
+                startActivityForResult(it, 103);
 
                 break;
             case R.id.next:
-                 it.setClass(context,HandCarActivity.class);
-                 startActivity(it);
+                if (notEmpty()){
+                    it.setClass(context, HandCarActivity.class);
+                    it.putExtra("truck", truck);
+                    startActivity(it);
+                }
 
                 break;
+
         }
+    }
+    private boolean notEmpty(){
+         if (TextUtils.isEmpty(truck.getBrand()) || TextUtils.isEmpty(truck.getCarNo())){
+              toast("信息不完整");
+              return false;
+         } else if (TextUtils.isEmpty(truck.getDriveImg1()) || TextUtils.isEmpty(truck.getManageImg())){
+             toast("请添加相应的图片");
+             return false;
+         }
+         return  true;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
 
-            String brand = data.getStringExtra("brand");
-            Log.d("cyd",brand);
-            brandTx.setText(brand);
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode == 101) {
+                truck = (Truck) data.getSerializableExtra("truck");
+                brandTx.setText(truck.getBrand() + " " + truck.getStyle());
+            } else if (requestCode == 102) {
+                int width = img1.getMeasuredWidth();
+                int height = width / 3 * 2;
+                driveImgList = data.getParcelableArrayListExtra("imgs");
+                Glide.with(this).load(driveImgList.get(0).uri).override(width, height).into(img1);
+                Glide.with(this).load(driveImgList.get(1).uri).override(width, height).centerCrop().into(img2);
+                Glide.with(this).load(driveImgList.get(2).uri).override(width, height).into(img3);
+                truck.setDriveImg1(UriUtil.getRealFilePath(this, driveImgList.get(0).uri));
+                truck.setDriveImg2(UriUtil.getRealFilePath(this, driveImgList.get(1).uri));
+                truck.setDriveImg3(UriUtil.getRealFilePath(this, driveImgList.get(2).uri));
+            } else if (requestCode == 103) {
+                int width = manageImg.getMeasuredWidth();
+                int height = width / 3 * 2;
+                Log.d("size",width + "/" + height);
+                manageImgPath = UriUtil.getRealFilePath(this, data.getData());
+                Glide.with(this).load(manageImgPath).override(width, height).into(manageImg);
+                truck.setManageImg(manageImgPath);
+            }
+
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
+
     private void initDialog() {
-        dialog = new Dialog(this, R.style.dialog_alert_light);
+        carNoDialog = new Dialog(this, R.style.dialog_alert);
         gridView = new GridView(this);
         gridView.setNumColumns(8);
         gridView.setBackgroundColor(Color.GRAY);
@@ -151,11 +215,11 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
         gridView.setVerticalSpacing(1);
         gridView.setHorizontalSpacing(1);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -2);
-        dialog.setContentView(gridView, params);
+        carNoDialog.setContentView(gridView, params);
         gridAdapter = new GridAdapter();
         gridAdapter.setValues(Arrays.asList(Provinces));
         gridView.setAdapter(gridAdapter);
-        Window win = dialog.getWindow();
+        Window win = carNoDialog.getWindow();
         WindowManager.LayoutParams lp = win.getAttributes();
         lp.gravity = Gravity.BOTTOM;
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -164,23 +228,28 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                sb.append(gridAdapter.getItem(i));
-                if (sb.length() == 0 && statu == 1){
+                if (i == adapterView.getCount() - 1) {
+                    if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
+                    if (sb.length() == 0) statu = 0;
+                } else {
+                    if (sb.length() < 7) sb.append(gridAdapter.getItem(i));
+                }
+
+                if (sb.length() == 0) {
                     gridView.setNumColumns(8);
                     gridAdapter.setValues(Arrays.asList(Provinces));
                     gridAdapter.notifyDataSetChanged();
-                }else if (statu == 0){
+                } else if (statu == 0) {
                     statu = 1;
                     gridView.setNumColumns(7);
                     gridAdapter.setValues(characters);
                     gridAdapter.notifyDataSetChanged();
                 }
-               carnoTx.setText(sb.toString());
-
+                carnoTx.setText(sb.toString());
+                truck.setCarNo(sb.toString());
             }
         });
     }
-
 
 
     class GridAdapter extends BaseAdapter {

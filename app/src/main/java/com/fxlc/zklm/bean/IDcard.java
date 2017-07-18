@@ -5,18 +5,47 @@ package com.fxlc.zklm.bean;
  */
 
 public class IDcard {
-    public   String name ;
-    public    String address;
-    public   String birth;
-    public   String num;
-    public  String  sex;
+    public String name;
+    public String address;
+    public String issue;
+    public String startDate;
+    public String endDate;
+
+    public String getIssue() {
+        return issue;
+    }
+
+    public void setIssue(String issue) {
+        this.issue = issue;
+    }
+
+    public String birth;
+    public String num;
+    public String sex;
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 
     public String getSex() {
         return sex;
     }
 
+
     public void setSex(String sex) {
         this.sex = sex;
+
     }
 
     public String getName() {

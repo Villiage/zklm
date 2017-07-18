@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:padding="@dimen/activity_margin">
+
+    <TextView
+        android:id="@+id/left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textColor="@color/text_primary"
+        android:text="车牌号："
+        android:textSize="@dimen/label" />
+
+    <TextView
+        android:id="@+id/car_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/left"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/label" />
+
+
+
+    <ImageView
+        android:id="@+id/jt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/jt_gray" />
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_marginRight="@dimen/activity_margin"
+       android:layout_centerVertical="true"
+       android:layout_toLeftOf="@id/jt">
+
+       <TextView
+           android:id="@+id/car_statu"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerVertical="true"
+           android:text="10000"
+           android:textColor="@color/assist" />
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerVertical="true"
+           android:layout_gravity="center_horizontal"
+           android:textSize="10dp"
+           android:text="额度(元)" />
+
+   </LinearLayout>
+
+</RelativeLayout>

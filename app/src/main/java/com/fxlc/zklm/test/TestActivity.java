@@ -137,7 +137,7 @@ public class TestActivity extends AppCompatActivity {
             txt1 = (TextView) view.findViewById(R.id.text1);
             txt2 = (TextView) view.findViewById(R.id.text2);
             txt1.setText(con.getName());
-            txt2.setText(con.getNum());
+            txt2.setText(con.getPhone());
             charTxt.setText(con.getFirst() + "");
             if (i > 0 && con.getFirst() == dataList.get(i - 1).getFirst()) {
                charTxt.setVisibility(View.GONE);
