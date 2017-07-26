@@ -29,7 +29,7 @@ public interface UserService {
      Call<HttpResult<User>>  login (@QueryMap Map<String, String> param);
 
      @POST("user/forgetPass")
-     Call<String>  setpwd ( @QueryMap Map<String, String> param);
+     Call<HttpResult>  setpwd ( @QueryMap Map<String, String> param);
     @GET("sms/getSms")
     Call<HttpResult>  getSms (@Query("mobile") String mobile);
      @Multipart
@@ -47,10 +47,11 @@ public interface UserService {
 
     @Multipart
     @POST("companyInfo/saveCompanyInfo")
-    Call<ResponseBody>   saveCompany(@QueryMap Map<String,String> param,@Part("businessLicense") RequestBody lincense);
+    //@POST("file.php")
+    Call<HttpResult>   saveCompany(@Query("companyname") String name,@Part("businessLicense\";filename=\"com_license.jpg") RequestBody lincense);
    @Multipart
     @POST("companyInfo/saveCompanyInfo")
-    Call<HttpResult>   saveCompany2(@QueryMap Map<String,String> param,@Part MultipartBody.Part lincense);
+    Call<HttpResult>   saveCompany2(@Query("companyname") String name,@Part MultipartBody.Part lincense);
 
     @POST("user/savePaypass")
     Call<HttpResult>    savePayPass(@QueryMap HashMap<String,String> map);

@@ -26,6 +26,7 @@ public class SqlActivity extends AppCompatActivity {
 
     MySqliteHelper helper;
     SQLiteDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class SqlActivity extends AppCompatActivity {
                 readDB();
             }
         });
-         helper = new MySqliteHelper(this);
+        helper = new MySqliteHelper(this);
 
     }
 
@@ -50,16 +51,16 @@ public class SqlActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             String uri = data.getData().toString();
             Log.d("sql", uri);
-            String path = UriUtil.getRealFilePath(this,data.getData());
+            String path = UriUtil.getRealFilePath(this, data.getData());
             readExcel(path);
         }
 
     }
 
-    public void readExcel(String path){
+    public void readExcel(String path) {
         db = helper.getWritableDatabase();
         try {
-            InputStream  is = new FileInputStream(path);
+            InputStream is = new FileInputStream(path);
             Workbook book = Workbook.getWorkbook(is);
             int num = book.getNumberOfSheets();
 
@@ -70,11 +71,11 @@ public class SqlActivity extends AppCompatActivity {
             // getCell(Col,Row)获得单元格的值
             for (int i = 1; i < rows; ++i) {
                 Truck truck = new Truck();
-                truck.setBrand(sheet.getCell(0,i).getContents());
-                Log.d("excel",truck.getBrand());
-                truck.setStyle(sheet.getCell(1,i).getContents());
-                truck.setDrive(sheet.getCell(4,i).getContents());
-                truck.setSoup(sheet.getCell(2,i).getContents());
+                truck.setBrand(sheet.getCell(0, i).getContents());
+                Log.d("excel", truck.getBrand());
+                truck.setStyle(sheet.getCell(1, i).getContents());
+                truck.setDrive(sheet.getCell(4, i).getContents());
+                truck.setSoup(sheet.getCell(2, i).getContents());
                 saveTruck(truck);
 
             }
@@ -90,27 +91,29 @@ public class SqlActivity extends AppCompatActivity {
         }
 
     }
-    public  void saveTruck(Truck truck){
+
+    public void saveTruck(Truck truck) {
 
         String sql = "insert into truck(brand,style,drive,soup) values (?,?,?,?)";
-        db.execSQL(sql,new String[]{truck.getBrand(),truck.getStyle(),truck.getDrive(),truck.getSoup()});
+        db.execSQL(sql, new String[]{truck.getBrand(), truck.getStyle(), truck.getDrive(), truck.getSoup()});
 
     }
-   public void readDB(){
-       db = helper.getWritableDatabase();
 
-       String sql = "select * from truck";
-       Cursor cursor = db.rawQuery(sql,null);
+    public void readDB() {
+        db = helper.getWritableDatabase();
 
-        while (cursor.moveToNext()){
+        String sql = "select * from truck";
+        Cursor cursor = db.rawQuery(sql, null);
+
+        while (cursor.moveToNext()) {
             String brand = cursor.getString(1);
             String style = cursor.getString(2);
             String drive = cursor.getString(3);
             String soup = cursor.getString(4);
-        Log.d("database",brand + "-" + style + "-" + drive + "-" + soup);
+            Log.d("database", brand + "-" + style + "-" + drive + "-" + soup);
 
         }
 
 
-   }
+    }
 }

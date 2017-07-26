@@ -2,8 +2,10 @@ package com.fxlc.zklm.activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,6 +36,7 @@ import com.fxlc.zklm.bean.Contact;
 import com.fxlc.zklm.bean.MediaStoreData;
 import com.fxlc.zklm.bean.User;
 import com.fxlc.zklm.net.HttpResult;
+import com.fxlc.zklm.net.MyThrowable;
 import com.fxlc.zklm.net.SimpleCallback;
 import com.fxlc.zklm.net.service.PayService;
 import com.fxlc.zklm.net.service.UserService;
@@ -68,7 +71,7 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
     TextView[] pswTxtArr = new TextView[6];
     Retrofit retrofit;
     PayService service;
-
+    AlertDialog pwdDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +126,8 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
         initDialog();
         retrofit = MyApplication.getRetrofit();
         service = retrofit.create(PayService.class);
+        pwdDialog = new AlertDialog.Builder(this).create();
+
     }
 
     @Override
@@ -144,10 +149,52 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         });
+
         sb = new StringBuffer();
         for (TextView textView : pswTxtArr) {
             textView.getEditableText().clear();
         }
+    }
+    private void isPayPass(){
+
+         PayService service = retrofit.create(PayService.class);
+
+         Call<HttpResult>  call = service.isPaypass();
+         call.enqueue(new SimpleCallback() {
+            @Override
+            public void onSuccess(HttpResult result) {
+
+                     payDialog.show();
+
+            }
+
+             @Override
+             public void onFailure(Call<HttpResult> call, Throwable throwable) {
+                 super.onFailure(call, throwable);
+                 if (throwable instanceof MyThrowable){
+                     pwdDialog.setMessage("请先设置支付密码");
+                     pwdDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialogInterface, int i) {
+                             dialogInterface.dismiss();
+
+                         }
+                     });
+                     pwdDialog.setButton(AlertDialog.BUTTON_POSITIVE, "去设置", new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialogInterface, int i) {
+                             dialogInterface.dismiss();
+                             it.setClass(ctx,ChangePayPwdActivity.class);
+                             it.putExtra("title","设置支付密码");
+                             startActivity(it);
+                         }
+                     });
+                     pwdDialog.setCanceledOnTouchOutside(false);
+                     pwdDialog.show();
+                 }
+             }
+         });
+
     }
 
     private void pay() {
@@ -296,8 +343,9 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.pay:
 
-                payDialog.show();
+//                payDialog.show();
 //                UploadService.actionAddBillImg(ctx,"8eb78b1563ba4820a4b0f6e65c20597d",adapter.getDataList());
+                isPayPass();
                 break;
 
         }

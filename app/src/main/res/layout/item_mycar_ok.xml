@@ -43,11 +43,10 @@
        android:layout_toLeftOf="@id/jt">
 
        <TextView
-           android:id="@+id/car_statu"
+           android:id="@+id/amount"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_centerVertical="true"
-           android:text="10000"
            android:textColor="@color/assist" />
        <TextView
            android:layout_width="wrap_content"

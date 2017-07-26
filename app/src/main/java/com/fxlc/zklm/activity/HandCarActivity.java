@@ -104,7 +104,10 @@ public class HandCarActivity extends BaseActivity implements View.OnClickListene
 
     Dialog d,typeD;
     String[] typeArr = {"仓栅式半挂车", "栏板式半挂车", "平板式半挂车"};
-    String[] longArr = {"1", "2", "3", "4", "5"};
+    String[] longArr = {"5", "6", "7", "8", "9","10","11","12","13","14","15","16","17","18","19","20"};
+    String[] heightArr = {"1", "2", "3", "4"};
+    String[] pointArr = {"0" ,"1", "2", "3", "4","5","6","7","8","9"};
+
 
     @Override
     protected void onResume() {
@@ -132,7 +135,7 @@ public class HandCarActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.get_length:
 
-                d = DialogUtil.createWheelDialog(this, Arrays.asList(longArr), Arrays.asList(longArr), new DialogUtil.ValueLisener() {
+                d = DialogUtil.createWheelDialog(this, Arrays.asList(longArr), Arrays.asList(pointArr), new DialogUtil.ValueLisener() {
                     @Override
                     public void onValue(String value) {
                            lengthTx.setText(value);
@@ -143,7 +146,7 @@ public class HandCarActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.get_height:
 
-                d = DialogUtil.createWheelDialog(this, Arrays.asList(longArr), Arrays.asList(longArr), new DialogUtil.ValueLisener() {
+                d = DialogUtil.createWheelDialog(this, Arrays.asList(heightArr), Arrays.asList(pointArr), new DialogUtil.ValueLisener() {
                     @Override
                     public void onValue(String value) {
                           heightTx.setText(value);
@@ -155,7 +158,8 @@ public class HandCarActivity extends BaseActivity implements View.OnClickListene
             case R.id.get_drive_license:
 
                 it.setClass(ctx, PickImgActivity.class);
-                it.putExtra("num", 3);
+                it.putExtra("min", 3);
+                it.putExtra("max", 3);
                 startActivityForResult(it, 102);
 
                 break;
@@ -173,7 +177,9 @@ public class HandCarActivity extends BaseActivity implements View.OnClickListene
             case R.id.next:
                 if (notEmpty()){
                     UploadService.startActionAddCar(this,truck);
-                    toast("车辆资料上传中..");
+                    toast("车辆已提交审核");
+                    setResult(RESULT_OK);
+                    finish();
                 }
                 break;
 
@@ -205,23 +211,25 @@ public class HandCarActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 102) {
-            int width = img1.getMeasuredWidth();
-            int height = width / 3 * 2;
-            driveImgList = data.getParcelableArrayListExtra("imgs");
-            Glide.with(this).load(driveImgList.get(0).uri).override(width, height).into(img1);
-            Glide.with(this).load(driveImgList.get(1).uri).override(width, height).centerCrop().into(img2);
-            Glide.with(this).load(driveImgList.get(2).uri).override(width, height).into(img3);
-            truck.setHanddriveImg1(UriUtil.getRealFilePath(this,driveImgList.get(0).uri));
-            truck.setHanddriveImg2(UriUtil.getRealFilePath(this,driveImgList.get(1).uri));
-            truck.setHanddriveImg3(UriUtil.getRealFilePath(this,driveImgList.get(2).uri));
-        }
-        if (requestCode == 103) {
-            int width = manageImg.getMeasuredWidth();
-            int height = width / 3 * 2;
-            manageImgPath = UriUtil.getRealFilePath(this, data.getData());
-            Glide.with(this).load(manageImgPath).override(width,height).into(manageImg);
-            truck.setHandmanageImg(manageImgPath);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 102) {
+                int width = img1.getMeasuredWidth();
+                int height = width / 3 * 2;
+                driveImgList = data.getParcelableArrayListExtra("imgs");
+                Glide.with(this).load(driveImgList.get(0).uri).override(width, height).into(img1);
+                Glide.with(this).load(driveImgList.get(1).uri).override(width, height).into(img2);
+                Glide.with(this).load(driveImgList.get(2).uri).override(width, height).into(img3);
+                truck.setHanddriveImg1(UriUtil.getRealFilePath(this, driveImgList.get(0).uri));
+                truck.setHanddriveImg2(UriUtil.getRealFilePath(this, driveImgList.get(1).uri));
+                truck.setHanddriveImg3(UriUtil.getRealFilePath(this, driveImgList.get(2).uri));
+            }
+            if (requestCode == 103) {
+                int width = manageImg.getMeasuredWidth();
+                int height = width / 3 * 2;
+                manageImgPath = UriUtil.getRealFilePath(this, data.getData());
+                Glide.with(this).load(manageImgPath).override(width, height).into(manageImg);
+                truck.setHandmanageImg(manageImgPath);
+            }
         }
     }
 
@@ -262,6 +270,8 @@ public class HandCarActivity extends BaseActivity implements View.OnClickListene
                     gridView.setNumColumns(7);
                     gridAdapter.setValues(characters);
                     gridAdapter.notifyDataSetChanged();
+                }else if (sb.length() == 7){
+                    carNoDialog.dismiss();
                 }
                 carnoTx.setText(sb.toString());
                 truck.setHandcarNo(sb.toString());

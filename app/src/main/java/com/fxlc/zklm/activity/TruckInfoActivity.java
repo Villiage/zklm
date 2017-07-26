@@ -35,6 +35,15 @@ public class TruckInfoActivity extends BaseActivity implements View.OnClickListe
         pagerAdapter = new TruckFragAdapter(getSupportFragmentManager());
         mPager.setAdapter(pagerAdapter);
 
+        if (truck.getCartype() == 1)
+            mPager.setCurrentItem(1);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        title("车辆详情");
     }
 
     private void initData() {

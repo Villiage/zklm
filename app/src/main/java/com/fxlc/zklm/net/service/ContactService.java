@@ -26,6 +26,8 @@ public interface ContactService {
     Call<HttpResult> addContact (@QueryMap HashMap<String ,String> param, @Body List<Contact> list);
    @POST("contact/saveContact")
     Call<HttpResult> addContact2 (@QueryMap HashMap<String ,String> param);
+    @POST("contact/saveContact")
+    Call<HttpResult> addContact3 (@Query("contact") String contact);
     @GET("contact/list")
     Call<ResponseBody>  getContact();
     @GET("contact/update")

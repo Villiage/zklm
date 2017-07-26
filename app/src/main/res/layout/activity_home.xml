@@ -115,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="+ 联系人"
+            android:text="常用联系人"
             android:textColor="#00afff" />
     </FrameLayout>
 

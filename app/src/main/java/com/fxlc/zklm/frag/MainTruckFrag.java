@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.Truck;
+
+import java.util.List;
 
 /**
  * Created by cyd on 2017/6/30.
@@ -31,7 +34,7 @@ public class MainTruckFrag extends Fragment {
     public static MainTruckFrag newInstance(Truck truck) {
 
         Bundle args = new Bundle();
-        args.putSerializable("truck",truck);
+        args.putSerializable("truck", truck);
         MainTruckFrag fragment = new MainTruckFrag();
         fragment.setArguments(args);
         return fragment;
@@ -50,11 +53,20 @@ public class MainTruckFrag extends Fragment {
 
         brandTx = (TextView) view.findViewById(R.id.brand);
         carnoTx = (TextView) view.findViewById(R.id.carno);
-        if (truck.getCartype() == 0){
+        if (truck.getCartype() == 0) {
             brandTx.setText(truck.getBrand() + " " + truck.getStyle());
             carnoTx.setText(truck.getCarNo());
 
         }
+
+        List<String> imgs = truck.getDriveImg();
+        if (imgs != null) {
+            Glide.with(this).load(imgs.get(0)).into(img1);
+            Glide.with(this).load(imgs.get(1)).into(img2);
+            Glide.with(this).load(imgs.get(2)).into(img3);
+        }
+
+        Glide.with(this).load(truck.getManageImg()).into(manageImg);
 
         return view;
 

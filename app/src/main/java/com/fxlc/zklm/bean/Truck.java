@@ -1,13 +1,14 @@
 package com.fxlc.zklm.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by cyd on 2017/6/23.
  */
 
 public class Truck implements Serializable{
-    private int statu;
+    private int status;
     private int cartype;
 
 
@@ -36,18 +37,22 @@ public class Truck implements Serializable{
     private String driveImg1;
     private String driveImg2;
     private String driveImg3;
-
+    private List<String> driveImg;
     private String manageImg;
 
     private String handcarNo;
     private String handdriveImg1;
     private String handdriveImg2;
     private String handdriveImg3;
+    private List<String> handdriveImg;
 
     private String handmanageImg;
     private String type;
     private String length;
     private String height;
+    private String mortgageMoney;
+
+
 
     public String getBrand() {
         return brand;
@@ -175,11 +180,36 @@ public class Truck implements Serializable{
     public void setHeight(String height) {
         this.height = height;
     }
-    public int getStatu() {
-        return statu;
-    }
-    public void setStatu(int statu) {
-        this.statu = statu;
+
+    public List<String> getDriveImg() {
+        return driveImg;
     }
 
+    public void setDriveImg(List<String> driveImg) {
+        this.driveImg = driveImg;
+    }
+
+    public List<String> getHanddriveImg() {
+        return handdriveImg;
+    }
+
+    public void setHanddriveImg(List<String> handdriveImg) {
+        this.handdriveImg = handdriveImg;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getMortgageMoney() {
+        return mortgageMoney;
+    }
+
+    public void setMortgageMoney(String mortgageMoney) {
+        this.mortgageMoney = mortgageMoney;
+    }
 }

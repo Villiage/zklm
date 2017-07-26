@@ -29,12 +29,15 @@ public abstract class HttpCallback<T> implements Callback<HttpResult<T>> {
         HttpResult<T> result = response.body();
 
         if (result != null){
-            onSuccess(result.getBody());
-            Log.d("response", new Gson().toJson(result));
-            if (!result.isSuccess()){
+            if (result.isSuccess()){
+                onSuccess(result.getBody());
+                Log.d("response", new Gson().toJson(result));
+            }
+            else {
+                onFailure(call,new MyThrowable());
                 Toast.makeText(MyApplication.getInstance().getApplicationContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
                if (result.getErrorCode().equals("01")){
-                  LoginActivity.toThis();
+                   MyApplication.exit();
                }
             }
 
@@ -46,8 +49,12 @@ public abstract class HttpCallback<T> implements Callback<HttpResult<T>> {
     @Override
     public void onFailure(Call call, Throwable t) {
 
+        if (t instanceof MyThrowable){
 
-        Toast.makeText(MyApplication.getInstance().getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(MyApplication.getInstance().getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public abstract void onSuccess(T t);

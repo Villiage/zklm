@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -73,11 +74,14 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
     private ProgressDialog dialog;
 
     private Context context;
-    private Bitmap.CompressFormat format;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if (msg.what == -1){
+                toast("照片识别失败，请重新上传");
+                return;
+            }
             if (type == 1) {
                 String dataValue = (String) msg.obj;
                 JSONObject outputObj = null;
@@ -91,7 +95,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
                         idNoTxt.setText(idcard.getNum());
                         realNameTxt.setText(idcard.getName());
                     } else {
-
+                        toast("照片识别失败，请重新上传");
                         Log.d("Card", "照片识别失败，请重新上传" + "\n");
                     }
 
@@ -110,7 +114,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
                         issueTxt.setText(idcard.getIssue());
 
                     } else {
-
+                        toast("照片识别失败，请重新上传");
                         Log.d("Card", "照片识别失败，请重新上传" + "\n");
                     }
 
@@ -146,6 +150,11 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
         choiceDialog = DialogUtil.createDialog(IDcardAuditActivity.this, new String[]{"相册", "拍照"}, this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        title("个人认证");
+    }
 
     OkHttpClient client = new OkHttpClient();
 
@@ -155,30 +164,12 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_face:
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
-                } else {
-                    //权限已经被授予，在这里直接写要执行的相应方法即可
                     type = 1;
                     choiceDialog.show();
-                }
-
                 break;
             case R.id.img_back:
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
-                } else {
-                    //权限已经被授予，在这里直接写要执行的相应方法即可
                     type = 2;
                     choiceDialog.show();
-                }
-
                 break;
 
             case R.id.verify:
@@ -188,20 +179,15 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
                     Toast.makeText(context,"照片信息不完整或不清晰，请重新选取",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.dialog_item1:
-
                 choiceDialog.dismiss();
                 Intent album = new Intent(Intent.ACTION_PICK);
                 album.setType("image/*");
                 startActivityForResult(album, ALBUM_CODE);
                 break;
             case R.id.dialog_item2:
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
                 choiceDialog.dismiss();
-                Intent takephoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                captureFile = FileUtil.getSaveFile(IDcardAuditActivity.this, type == 1?faceTempFile:backTempFile);
-                Uri uri = Uri.fromFile(captureFile);
-                takephoto.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(takephoto, CAPTURE_CODE);
                 break;
             case R.id.dialog_close:
                 choiceDialog.dismiss();
@@ -210,7 +196,17 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    private void photo(){
+        faceTempFile += System.currentTimeMillis();
+        backTempFile += System.currentTimeMillis();
+        Intent takephoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        captureFile = FileUtil.getSaveFile(ctx, type == 1?faceTempFile:backTempFile);
+        Uri uri = Uri.fromFile(captureFile);
+        takephoto.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(takephoto, CAPTURE_CODE);
 
+
+    }
 
     public void readCard(String photoPath) {
         dialog.setMessage("正在验证照片,请稍侯...");
@@ -266,7 +262,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
                 if (response.code() == 200) {
                     try {
                         String result = response.body().string();
-                        Log.d(TAG, result);
+
                         JSONObject obj = new JSONObject(result);
                         JSONArray outputs = obj.getJSONArray("outputs");
                         String outputValue = outputs.getJSONObject(0).optJSONObject("outputValue").getString("dataValue");
@@ -277,11 +273,12 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
                         handler.sendMessage(msg);
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        handler.sendEmptyMessage(-1);
                     }
 
                 } else {
+                    handler.sendEmptyMessage(-1);
 
-                    Toast.makeText(IDcardAuditActivity.this, "验证失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -318,7 +315,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
             public void onResponse(retrofit2.Call<HttpResult> call, retrofit2.Response<HttpResult> response) {
                  proDialog.dismiss();
 
-                 toast(response.body().getMsg());
+
                  if (response.body().isSuccess()){
                      user.setName(idcard.getName());
                      save("user", new Gson().toJson(user));
@@ -356,17 +353,17 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 102) {
+
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent album = new Intent(Intent.ACTION_PICK);
-                album.setType("image/*");
-                startActivityForResult(album, ALBUM_CODE);
+                  photo();
             } else {
                 // Permission Denied
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "请在 设置->权限 中授权拍照", Toast.LENGTH_SHORT).show();
             }
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 
     @Override
@@ -390,7 +387,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
             else if (type== 2) {
                Glide.with(context).load(backPath = photoPath).fitCenter().into(backImg);
            }
-            readCard(photoPath);
+           readCard(photoPath);
         }
 
     }

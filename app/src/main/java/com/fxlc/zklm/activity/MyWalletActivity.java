@@ -20,14 +20,16 @@ public class MyWalletActivity extends BaseActivity implements View.OnClickListen
     Context context;
     TextView validAmountTx;
     Wallet wallet;
+    View tipView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_my_wallet);
+        tipView = findViewById(R.id.tipv);
         findViewById(R.id.mbrrow).setOnClickListener(this);
         findViewById(R.id.mpay).setOnClickListener(this);
-
+        findViewById(R.id.tip_close).setOnClickListener(this);
         validAmountTx = (TextView) findViewById(R.id.validAmount);
         getMoney();
     }
@@ -51,6 +53,10 @@ public class MyWalletActivity extends BaseActivity implements View.OnClickListen
             case R.id.mpay:
                 it.setClass(context,PayHistoryActivity.class);
                 startActivity(it);
+                break;
+            case R.id.tip_close:
+                tipView.setVisibility(View.INVISIBLE);
+
                 break;
         }
     }

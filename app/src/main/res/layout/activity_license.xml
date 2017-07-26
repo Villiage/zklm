@@ -13,31 +13,8 @@
 
 
     <include layout="@layout/activity_title"/>
+  
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:textColor="@color/text_primary"
-            android:text="可用额度(元)"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/password_dot"
-            android:text="100000"/>
-    </LinearLayout>
-    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/option_margin"
@@ -57,15 +34,19 @@
             android:text="公司名称" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:id="@+id/com_name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_gravity="right"
+            android:gravity="right"
             android:background="@null"
             android:hint="请填写公司名称"
+
             android:drawablePadding="8dp"
             android:textColorHint="@color/text_tip"
             android:drawableRight="@drawable/jt_blue" />
-    </FrameLayout>
+    </LinearLayout>
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp" />

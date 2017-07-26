@@ -7,9 +7,11 @@ import android.util.Log;
 
 import com.fxlc.zklm.bean.IDcard;
 import com.fxlc.zklm.bean.User;
+import com.fxlc.zklm.db.CarDao;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -38,9 +40,9 @@ public class MyApplication extends Application {
 
         sp = getSharedPreferences("app", Context.MODE_PRIVATE);
         initUser();
-//        initIDcard();
+//      initIDcard();
         initRetrofit();
-
+        initCarsData();
 
     }
 
@@ -49,8 +51,10 @@ public class MyApplication extends Application {
 
         return instance;
     }
-    public static void exit(){
+
+    public static void exit() {
         user = null;
+        sp.edit().remove("user").commit();
     }
 
     public static Retrofit getRetrofit() {
@@ -58,7 +62,6 @@ public class MyApplication extends Application {
 
         return retrofit;
     }
-
 
 
     private void initRetrofit() {
@@ -115,8 +118,20 @@ public class MyApplication extends Application {
 
 
     public static void setUser(User u) {
-
         user = u;
+    }
+
+    public void initCarsData() {
+           CarDao dao = new CarDao(getApplicationContext());
+        if (!dao.hasData()) {
+
+            try {
+                InputStream is = getAssets().open("car.xls");
+                dao.readExcel(is);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 
     }

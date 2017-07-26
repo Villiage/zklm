@@ -3,12 +3,7 @@ package com.fxlc.zklm.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,19 +17,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.fxlc.zklm.BaseActivity;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.MediaStoreData;
 import com.fxlc.zklm.bean.Truck;
-import com.fxlc.zklm.db.MySqliteHelper;
-import com.fxlc.zklm.util.BitmapUtil;
-import com.fxlc.zklm.util.DialogUtil;
-import com.fxlc.zklm.util.DisplayUtil;
 import com.fxlc.zklm.util.UriUtil;
 
 import java.util.ArrayList;
@@ -156,7 +145,7 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
                 if (notEmpty()){
                     it.setClass(context, HandCarActivity.class);
                     it.putExtra("truck", truck);
-                    startActivity(it);
+                    startActivityForResult(it,201);
                 }
 
                 break;
@@ -187,7 +176,7 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
                 int height = width / 3 * 2;
                 driveImgList = data.getParcelableArrayListExtra("imgs");
                 Glide.with(this).load(driveImgList.get(0).uri).override(width, height).into(img1);
-                Glide.with(this).load(driveImgList.get(1).uri).override(width, height).centerCrop().into(img2);
+                Glide.with(this).load(driveImgList.get(1).uri).override(width, height).into(img2);
                 Glide.with(this).load(driveImgList.get(2).uri).override(width, height).into(img3);
                 truck.setDriveImg1(UriUtil.getRealFilePath(this, driveImgList.get(0).uri));
                 truck.setDriveImg2(UriUtil.getRealFilePath(this, driveImgList.get(1).uri));
@@ -199,6 +188,9 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
                 manageImgPath = UriUtil.getRealFilePath(this, data.getData());
                 Glide.with(this).load(manageImgPath).override(width, height).into(manageImg);
                 truck.setManageImg(manageImgPath);
+            }else if (requestCode == 201){
+
+                finish();
             }
 
         }
@@ -244,6 +236,8 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
                     gridView.setNumColumns(7);
                     gridAdapter.setValues(characters);
                     gridAdapter.notifyDataSetChanged();
+                }else if (sb.length() == 7){
+                    carNoDialog.dismiss();
                 }
                 carnoTx.setText(sb.toString());
                 truck.setCarNo(sb.toString());

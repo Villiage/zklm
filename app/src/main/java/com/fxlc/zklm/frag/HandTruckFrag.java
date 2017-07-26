@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.Truck;
+
+import java.util.List;
 
 /**
  * Created by cyd on 2017/6/30.
@@ -54,7 +57,13 @@ public class HandTruckFrag extends Fragment {
         lengthTx.setText(truck.getLength());
         heightTx.setText(truck.getHeight());
         carnoTx.setText(truck.getHandcarNo());
-
+        List<String> imgs = truck.getHanddriveImg();
+         if (imgs != null){
+             Glide.with(this).load(imgs.get(0)).into(img1);
+             Glide.with(this).load(imgs.get(1)).into(img2);
+             Glide.with(this).load(imgs.get(2)).into(img3);
+         }
+        Glide.with(this).load(truck.getHandmanageImg()).into(manageImg);
 
         return view;
     }

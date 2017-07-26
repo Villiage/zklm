@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="30dp"
             android:src="@drawable/logo" />
 
 
@@ -30,7 +30,7 @@
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/edt_bg"
             android:drawableLeft="@drawable/login_name"
             android:drawablePadding="10dp"
@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:background="@drawable/login_bt_bg"
+            android:background="@drawable/bg_gradient"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/action_sign_up"

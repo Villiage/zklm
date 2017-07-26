@@ -80,12 +80,12 @@ public class TruckActivity extends BaseActivity implements View.OnClickListener 
         driveGroup.removeAllViews();
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(-2, -2);
         param.leftMargin = margin;
-        ColorStateList colorList = getColorStateList(R.color.tab_txt_sel);
-//        int[] colors = {R.color.white, R.color.text_mark};
-//        int[][] states = new int[2][];
-//        states[0] =  new int[]{android.R.attr.state_selected}  ;
-//        states[1] =  new int[]{}  ;
-//         ColorStateList colorList = new ColorStateList(states,colors);
+//        ColorStateList colorList = getColorStateList(R.color.tab_txt_sel);
+        int[] colors = {R.color.white, R.color.text_mark};
+        int[][] states = new int[2][];
+        states[0] =  new int[]{android.R.attr.state_selected}  ;
+        states[1] =  new int[]{}  ;
+         ColorStateList colorList = new ColorStateList(states,colors);
         for (String drive : drives) {
             TextView textView = new TextView(this);
             textView.setText(drive);

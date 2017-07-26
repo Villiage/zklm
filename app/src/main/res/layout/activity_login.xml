@@ -21,7 +21,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="60dp"
             android:src="@drawable/logo" />
 
@@ -31,10 +30,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:gravity="center_vertical"
             android:background="@drawable/edt_bg"
             android:drawableLeft="@drawable/login_name"
             android:drawablePadding="10dp"
+            android:gravity="center_vertical"
             android:hint="手机号"
             android:inputType="phone"
             android:maxLines="1" />
@@ -45,16 +44,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:inputType="textPassword"
             android:background="@drawable/edt_bg"
             android:drawableLeft="@drawable/login_password"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:drawableRight="@drawable/login_xs"
             android:hint="请输入您的密码"
             android:imeActionId="@+id/login"
             android:imeActionLabel="ok"
             android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
             android:maxLines="1" />
 
 
@@ -63,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:background="@drawable/login_bt_bg"
+            android:background="@drawable/bg_gradient"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/action_sign_in"
@@ -84,7 +82,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-
             android:text="or"
             android:textColor="@color/colorPrimary" />
 

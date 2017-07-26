@@ -1,7 +1,6 @@
 package com.fxlc.zklm.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -41,12 +40,14 @@ public class UInfoActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.setpwd).setOnClickListener(this);
         findViewById(R.id.paypwd).setOnClickListener(this);
         user = MyApplication.getUser();
-        getInfo();
+
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
+        getInfo();
         title("我的资料");
     }
 
@@ -78,6 +79,7 @@ public class UInfoActivity extends BaseActivity implements View.OnClickListener 
                         it.setClass(ctx, IDcardAuditActivity.class);
                     } else {
                         it.setClass(ctx, IDcardStatuActivity.class);
+                        it.putExtra("uinfo",uInfo);
                     }
                     startActivity(it);
                 }
@@ -95,12 +97,13 @@ public class UInfoActivity extends BaseActivity implements View.OnClickListener 
                 break;
             case R.id.setpwd:
 
-                it.setClass(ctx, SetPwdActivity.class);
+                it.setClass(ctx, ReSetPwdActivity.class);
                 startActivity(it);
                 break;
             case R.id.paypwd:
 
                 it.setClass(ctx, ChangePayPwdActivity.class);
+                it.putExtra("title","修改支付密码");
                 startActivity(it);
                 break;
 

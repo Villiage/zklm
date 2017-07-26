@@ -10,6 +10,7 @@
     <include layout="@layout/activity_title"/>
 
     <FrameLayout
+        android:id="@+id/clear_cache"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_margin"
@@ -23,20 +24,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/mimdle"
-            android:gravity="center_vertical"
             android:drawablePadding="@dimen/activity_margin"
-            android:text="清理缓存" />
+            android:gravity="center_vertical"
+            android:text="清理缓存"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/mimdle" />
+
         <TextView
+            android:id="@+id/cache"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="0.0M"
             android:drawablePadding="8dp"
-            android:drawableRight="@drawable/jt_blue" />
+            android:drawableRight="@drawable/jt_blue"
+            android:text="0.0M" />
 
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/feedback"
         android:layout_width="match_parent"
@@ -64,6 +68,7 @@
             android:background="@drawable/jt_blue" />
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/protocal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_margin"
@@ -90,6 +95,7 @@
             android:background="@drawable/jt_blue" />
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/aboutus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/option_margin"

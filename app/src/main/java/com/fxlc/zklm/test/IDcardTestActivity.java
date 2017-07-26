@@ -59,7 +59,7 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
     private ProgressDialog dialog;
 
     private Context context;
-    private Bitmap.CompressFormat format;
+
     public static final int IDcard_REQURIE_WIDTH = 800;
     public static final int IDcard_REQURIE_HEIGHT = 800;
     private Handler handler = new Handler() {
@@ -146,7 +146,7 @@ public class IDcardTestActivity extends AppCompatActivity implements View.OnClic
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
+                            new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
                 } else {
                     //权限已经被授予，在这里直接写要执行的相应方法即可
                     type = 1;

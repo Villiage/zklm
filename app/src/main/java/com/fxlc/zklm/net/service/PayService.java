@@ -46,5 +46,7 @@ public interface PayService {
     Call<HttpResult<BankAccount>> bank();
     @GET("user/paymentInfo")
     Call<HttpResult<PayInfo>> payInfo(@Query("payId") String payId);
+    @GET("user/isPaypass")
+    Call<HttpResult> isPaypass();
 
 }

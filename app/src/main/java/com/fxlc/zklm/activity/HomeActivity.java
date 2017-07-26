@@ -1,9 +1,13 @@
 package com.fxlc.zklm.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fxlc.zklm.BaseActivity;
 import com.fxlc.zklm.MyApplication;
@@ -46,6 +51,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     Retrofit retrofit;
     View emptyView, toIdcard;
     TextView usableMoney, totalMoney;
+    AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +91,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         }
         findViewById(R.id.add_contact).setOnClickListener(this);
         retrofit = MyApplication.getRetrofit();
+        dialog = new AlertDialog.Builder(this).create();
 
     }
 
@@ -92,11 +99,30 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         user = MyApplication.getUser();
-        if (user !=null){
+        if (user != null) {
             getMoney();
             getContact();
-        }else{
-            LoginActivity.toThis();
+        } else {
+            dialog.setMessage("您还未登陆");
+            dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "退出", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    finish();
+                }
+            });
+            dialog.setButton(AlertDialog.BUTTON_POSITIVE, "登陆", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    it.setClass(ctx,LoginActivity.class);
+                    startActivity(it);
+                }
+            });
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+
+//            LoginActivity.toThis();
         }
     }
 
@@ -164,8 +190,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case R.id.upgrade:
-                it.setClass(ctx, AddCarActivity.class);
-                startActivity(it);
+                if (user != null) {
+                    it.setClass(ctx, AddCarActivity.class);
+                    startActivity(it);
+                }
 
                 break;
             case R.id.dialog_item1:
@@ -191,8 +219,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         call.enqueue(new HttpCallback<Wallet>() {
             @Override
             public void onSuccess(Wallet wallet) {
+
+
                 totalMoney.setText("总额度 " + wallet.getSummoney());
                 usableMoney.setText(wallet.getUsablemoney());
+
+
             }
         });
     }
@@ -279,4 +311,22 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    long firstime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+// TODO Auto-generated method stub
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            long secondtime = System.currentTimeMillis();
+            if (secondtime - firstime > 2000) {
+                Toast.makeText(ctx, "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+                firstime = System.currentTimeMillis();
+                return true;
+            } else {
+                finish();
+                System.exit(0);
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

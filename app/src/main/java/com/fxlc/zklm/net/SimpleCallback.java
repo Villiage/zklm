@@ -23,8 +23,10 @@ public abstract class SimpleCallback implements Callback<HttpResult> {
 
         if (result != null) {
             Log.d("response", new Gson().toJson(result));
-            onSuccess(result);
-            if (!result.isSuccess()) {
+            if (result.isSuccess()){
+                onSuccess(result);
+            }else {
+                onFailure(call,new MyThrowable());
                 Toast.makeText(MyApplication.getInstance().getApplicationContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -33,7 +35,12 @@ public abstract class SimpleCallback implements Callback<HttpResult> {
 
     @Override
     public void onFailure(Call<HttpResult> call, Throwable throwable) {
-        Toast.makeText(MyApplication.getInstance().getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
+        if (throwable instanceof MyThrowable){
+
+        }else{
+            Toast.makeText(MyApplication.getInstance().getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     public abstract void onSuccess(HttpResult result);

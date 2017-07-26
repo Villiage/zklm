@@ -35,7 +35,7 @@ public class UInfo implements Serializable {
         this.user = user;
     }
 
-    public class UserBean {
+    public class UserBean implements Serializable{
 
         private String mobile;
         private int pstatus;
@@ -66,7 +66,7 @@ public class UInfo implements Serializable {
         }
     }
 
-    public class IDcard {
+    public class IDcard implements Serializable{
         private String name;
         private String cardnumber;
         private String cardAddress;

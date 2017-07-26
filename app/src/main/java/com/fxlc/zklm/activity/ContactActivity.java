@@ -180,15 +180,9 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
 
 
     public void checkPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS}, 102);
-        } else {
-            readContact();
-        }
-    }
+      }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -198,7 +192,7 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
                 readContact();
             } else {
                 // Permission Denied
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,  "联系人权限被禁止，请在设置中授权", Toast.LENGTH_SHORT).show();
             }
         }
 

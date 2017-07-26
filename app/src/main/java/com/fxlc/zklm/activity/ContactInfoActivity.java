@@ -142,10 +142,13 @@ public class ContactInfoActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.dialog_item1:
+                dialog.dismiss();
                 it.setClass(ctx, AddContactActivity.class);
+                it.putExtra("contact",contact);
                 startActivity(it);
                 break;
             case R.id.dialog_item2:
+                dialog.dismiss();
                 del();
                 break;
 
@@ -167,7 +170,7 @@ public class ContactInfoActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onSuccess(HttpResult result) {
 
-                if (result.isSuccess())
+                    toast("删除成功");
                     finish();
             }
 

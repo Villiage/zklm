@@ -3,14 +3,10 @@ package com.fxlc.zklm.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.fxlc.zklm.BaseActivity;
-import com.fxlc.zklm.Constant;
 import com.fxlc.zklm.MyApplication;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.User;
@@ -19,16 +15,10 @@ import com.fxlc.zklm.net.HttpResult;
 import com.fxlc.zklm.net.service.UserService;
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.HashMap;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A login screen that offers login via email/password.
@@ -39,7 +29,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText mPhoneView;
     private EditText mPwdView;
     private String phone, pass;
-    Context context;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +38,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         setContentView(R.layout.activity_login);
         initView();
-
-    }
-    public   static void toThis(){
-        Intent it = new Intent();
-        it.setClass(MyApplication.getInstance().getApplicationContext(),LoginActivity.class);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        MyApplication.getInstance().startActivity(it);
 
     }
 
@@ -71,11 +54,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void getValue() {
         phone = mPhoneView.getText().toString();
         pass = mPwdView.getText().toString();
-
-
-    }
-
-    private void validate() {
 
 
     }
@@ -117,15 +95,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
 
     @Override
     public void onClick(View view) {
@@ -135,7 +104,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(it);
                 break;
             case R.id.setpwd:
-                it.setClass(context, SetPwdActivity.class);
+                it.setClass(context, FindPwdActivity.class);
                 startActivity(it);
                 break;
             case R.id.action:

@@ -243,7 +243,20 @@
                     android:layout_weight="1" />
             </LinearLayout>
 
-
+            <TextView
+                android:id="@+id/next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/bg_gradient"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="完成"
+                android:textColor="@color/white"
+                android:textSize="@dimen/action_button" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

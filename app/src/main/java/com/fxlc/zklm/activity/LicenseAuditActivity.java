@@ -12,6 +12,7 @@ import android.nfc.Tag;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.IDcard;
 import com.fxlc.zklm.bean.User;
 import com.fxlc.zklm.net.HttpResult;
+import com.fxlc.zklm.net.SimpleCallback;
 import com.fxlc.zklm.net.service.UserService;
 import com.fxlc.zklm.test.IDcardTestActivity;
 import com.fxlc.zklm.util.BitmapUtil;
@@ -58,7 +60,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 
 public class LicenseAuditActivity extends BaseActivity implements View.OnClickListener {
-    ;
+
     public static int ALBUM_CODE = 100;
     public static int CAPTURE_CODE = 101;
     public static String captureTempFile = "license_temp.jpg";
@@ -66,6 +68,8 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
     private String licensePath;
     private boolean success, read = false;
 
+    private TextView comNameTx;
+    private String comName;
     private ImageView licenseImg;
     private byte[] content;
 
@@ -73,26 +77,31 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
     private ProgressDialog dialog;
 
     private Context context;
-    private User user;
 
-    private Bitmap.CompressFormat format;
+
+
 
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if (msg.what == -1){
+
+                toast("识别失败，请重新选取");
+            }
             if (msg.what == 0) {
                 String dataValue = (String) msg.obj;
+
+
                 JSONObject outputObj = null;
                 try {
                     outputObj = new JSONObject(dataValue);
-                    if (outputObj.getBoolean("success")) {
+                    if (!TextUtils.isEmpty(outputObj.getString("reg_num"))) {
                         success = true;
 
-
                     } else {
-
-                        Log.d("Card", "照片识别失败，请重新上传" + "\n");
+                        success = false;
+                        toast("照片识别失败，请重新上传");
                     }
 
                 } catch (JSONException e) {
@@ -110,6 +119,7 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
         context = this;
         setContentView(R.layout.activity_license);
 
+        comNameTx = (TextView) findViewById(R.id.com_name);
         licenseImg = (ImageView) findViewById(R.id.licenseImg);
 
         findViewById(R.id.license).setOnClickListener(this);
@@ -129,24 +139,21 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
     Dialog choiceDialog = null;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        title("公司认证");
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.license:
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
-                } else {
-                    //权限已经被授予，在这里直接写要执行的相应方法即可
-
-                    choiceDialog.show();
-                }
+//                    //权限已经被授予，在这里直接写要执行的相应方法即可
+                choiceDialog.show();
 
                 break;
-
-
             case R.id.verify:
+
                 if (read) {
                     if (success)
                         submit();
@@ -157,19 +164,17 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
 
                 break;
             case R.id.dialog_item1:
-
                 choiceDialog.dismiss();
                 Intent album = new Intent(Intent.ACTION_PICK);
                 album.setType("image/*");
                 startActivityForResult(album, ALBUM_CODE);
                 break;
             case R.id.dialog_item2:
+
                 choiceDialog.dismiss();
-                Intent takephoto = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                captureFile = FileUtil.getSaveFile(context, captureTempFile);
-                Uri uri = Uri.fromFile(captureFile);
-                takephoto.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(takephoto, CAPTURE_CODE);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
+
+
                 break;
             case R.id.dialog_close:
                 choiceDialog.dismiss();
@@ -177,7 +182,14 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
 
         }
     }
-
+    private void  photo(){
+        captureTempFile += System.currentTimeMillis();
+        Intent takephoto = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        captureFile = FileUtil.getSaveFile(context, captureTempFile);
+        Uri uri = Uri.fromFile(captureFile);
+        takephoto.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(takephoto, CAPTURE_CODE);
+    }
 
     public void readCard(String photoPath) {
         dialog.setMessage("正在验证照片,请稍侯...");
@@ -218,18 +230,17 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
             public void onFailure(Call call, IOException e) {
                 dialog.dismiss();
 
-                Toast.makeText(context, "验证失败", Toast.LENGTH_SHORT).show();
+                toast("识别失败，请重新选取");
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 dialog.dismiss();
-
                 Toast.makeText(context, response.code() + "", Toast.LENGTH_SHORT).show();
                 if (response.code() == 200) {
                     try {
                         String result = response.body().string();
-                        Log.d("response", result);
+                        Log.d("response1", result);
                         JSONObject obj = new JSONObject(result);
                         JSONArray outputs = obj.getJSONArray("outputs");
                         String outputValue = outputs.getJSONObject(0).optJSONObject("outputValue").getString("dataValue");
@@ -240,11 +251,12 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
                         handler.sendMessage(msg);
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        handler.sendEmptyMessage(-1);
                     }
 
                 } else {
 
-                    Toast.makeText(context, "验证失败", Toast.LENGTH_SHORT).show();
+                    handler.sendEmptyMessage(-1);
                 }
             }
         });
@@ -253,56 +265,44 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
     }
 
     public void submit() {
+        comName = comNameTx.getText().toString();
         proDialog.show();
         user = MyApplication.getUser();
         Retrofit retrofit = MyApplication.getRetrofit();
         UserService service = retrofit.create(UserService.class);
-        HashMap map = new HashMap();
 
-        map.put("id", user.getId());
-        map.put("token", user.getToken());
-        map.put("companyname", "山西方向联创");
-        File file = new File(licensePath);
-        final RequestBody requestBody =
-                RequestBody.create(MediaType.parse("application/otcet-stream"), file);
-        MultipartBody.Part licensePart =
-                MultipartBody.Part.createFormData("businessLicense", file.getName(), requestBody);
-        retrofit2.Call<HttpResult> call = service.saveCompany2(map, licensePart);
-        call.enqueue(new retrofit2.Callback<HttpResult>() {
+        RequestBody requestBody =
+                RequestBody.create(MediaType.parse("application/otcet-stream"), BitmapUtil.cpPicToByte(licensePath,100));
 
+        retrofit2.Call<HttpResult> call = service.saveCompany(comName, requestBody);
+        call.enqueue(new SimpleCallback() {
             @Override
-            public void onResponse(retrofit2.Call<HttpResult> call, retrofit2.Response<HttpResult> response) {
-                dialog.dismiss();
-                   toast(response.body().getMsg());
-                   if (response.body().isSuccess()){
-                      finish();
-                  }
+            public void onSuccess(HttpResult result) {
+                proDialog.dismiss();
             }
 
             @Override
-            public void onFailure(retrofit2.Call<HttpResult> call, Throwable t) {
-
+            public void onFailure(retrofit2.Call<HttpResult> call, Throwable throwable) {
+                super.onFailure(call, throwable);
+                proDialog.dismiss();
             }
         });
 
     }
 
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 102) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent album = new Intent(Intent.ACTION_PICK);
-                album.setType("image/*");
-                startActivityForResult(album, ALBUM_CODE);
+                photo();
             } else {
                 // Permission Denied
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "请在设置->权限中打开拍照权限", Toast.LENGTH_SHORT).show();
             }
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 
     @Override

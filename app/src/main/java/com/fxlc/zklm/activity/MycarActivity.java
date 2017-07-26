@@ -84,11 +84,11 @@ public class MycarActivity extends BaseActivity {
                     Gson gson = new Gson();
                     for (int i = 0; i < arr.length(); i++) {
                         Truck truck = gson.fromJson(arr.getString(i), Truck.class);
-                        if (truck.getCartype() == 0) {
+                        if (truck.getStatus() == 0 ) {
                             noTrucks.add(truck);
-                        } else if (truck.getCartype() == 1) {
+                        } else if (truck.getStatus()  == 1) {
                             waitTrucks.add(truck);
-                        } else if (truck.getCartype() == 2) {
+                        } else if (truck.getStatus()  == 2) {
                             okTrucks.add(truck);
                         }
                     }
@@ -165,7 +165,8 @@ public class MycarActivity extends BaseActivity {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            TextView carNo;
+
+            Truck truck = data.get(i);
             if (statu == 0) {
                 if (view == null) {
                     view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_mycar_not, null);
@@ -180,10 +181,11 @@ public class MycarActivity extends BaseActivity {
                 if (view == null) {
                     view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_mycar_ok, null);
                 }
-
+                TextView txt = (TextView) view.findViewById(R.id.amount);
+                txt.setText(truck.getMortgageMoney());
             }
-            carNo = (TextView) view.findViewById(R.id.car_no);
-            Truck truck = data.get(i);
+             TextView carNo = (TextView) view.findViewById(R.id.car_no);
+
             if (truck.getCartype() == 0)
                 carNo.setText(truck.getCarNo());
             else if (truck.getCartype() == 1)

@@ -79,8 +79,8 @@ public class MyContactActivity extends BaseActivity implements View.OnClickListe
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-2, -2);
         params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
         topbar.addView(addView, params);
-        dialog = DialogUtil.createWBDialog(ctx, new String[]{"通讯录", "新建联系人"}, this);
-        getContact();
+        dialog = DialogUtil.createWBDialog(ctx, new String[]{"从通讯录添加", "新建联系人"}, this);
+
     }
 
     @Override
@@ -103,11 +103,12 @@ public class MyContactActivity extends BaseActivity implements View.OnClickListe
             case R.id.dialog_item1:
                 it.setClass(ctx,ContactActivity.class);
                 startActivity(it);
+                dialog.dismiss();
                 break;
             case R.id.dialog_item2:
+                dialog.dismiss();
                 it.setClass(ctx,AddContactActivity.class);
                 startActivity(it);
-
                 break;
         }
     }

@@ -11,9 +11,11 @@ import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.UInfo;
 
 public class LicenceStatuActivity extends BaseActivity {
-     TextView comNameTxt;
-      ImageView licenseImg;
-      private UInfo.Company company;
+    TextView comNameTxt;
+    ImageView licenseImg;
+    private UInfo.Company company;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +27,13 @@ public class LicenceStatuActivity extends BaseActivity {
         company = (UInfo.Company) getIntent().getSerializableExtra("com");
 
         comNameTxt.setText(company.getCompanyName());
-        Log.d("imgUrl",company.getBusinessLicense());
-        Glide.with(this).load(company.getBusinessLicense()).override(150,200).into(licenseImg);
+        Log.d("imgUrl", company.getBusinessLicense());
+        Glide.with(this).load(company.getBusinessLicense()).override(150, 200).into(licenseImg);
     }
 
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        title("公司信息");
+    }
 }
