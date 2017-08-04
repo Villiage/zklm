@@ -65,7 +65,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(it);
                 break;
             case R.id.car:
-                it.setClass(ctx, MycarActivity.class);
+                it.setClass(ctx, MycarActivityNew.class);
                 startActivity(it);
                 break;
             case R.id.setting:

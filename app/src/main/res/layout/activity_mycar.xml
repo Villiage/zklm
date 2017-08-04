@@ -12,45 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
 
-
-            <TextView
-                android:id="@+id/add_car"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="@dimen/activity_margin"
-                android:background="@drawable/bg_gradient"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="添加车辆"
-                android:textColor="@color/white"
-                android:textSize="@dimen/action_button" />
-
-            <TextView
-                android:id="@+id/tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/add_car"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
-                android:gravity="center_horizontal"
-                android:text="添加一辆车\n您可获得10000元额度"
-                android:textColor="@color/text_mark" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/tip"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/no_car" />
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

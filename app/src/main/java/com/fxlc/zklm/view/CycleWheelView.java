@@ -127,7 +127,7 @@ public class CycleWheelView extends ListView {
     }
 
     public void refresh(int firstVisiableItem, int visiableItemCount) {
-        Log.d("cyd","refresh");
+
         if (getChildAt(0) == null) {
             return;
         }

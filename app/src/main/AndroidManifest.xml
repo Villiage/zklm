@@ -6,15 +6,13 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -80,11 +78,12 @@
         <activity android:name=".activity.MyActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.MycarActivity" />
+        <activity android:name=".activity.MycarActivityNew" />
         <activity android:name=".activity.FeedbackActivity" />
         <activity android:name=".activity.ShareActivity" />
-        <activity android:name=".activity.PickImgActivity" />
-        <activity android:name=".activity.PhotoActivity" />
-        <activity android:name=".activity.RegistActivity" />
+            <activity android:name=".activity.PickImgActivity" />
+            <activity android:name=".activity.PhotoActivity" />
+            <activity android:name=".activity.RegistActivity" />
         <activity android:name=".activity.ReSetPwdActivity" />
         <activity android:name=".activity.FindPwdActivity" />
         <activity android:name=".activity.ChangePayPwdActivity" />
@@ -120,8 +119,9 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity android:name=".activity.PayInfoActivity" />
         <activity android:name=".activity.AboutusActivity" />
-        <activity android:name=".activity.ProtocalActivity"></activity>
-        <activity android:name=".test.IDcardTestActivity"/>
+        <activity android:name=".activity.ProtocalActivity" />
+        <activity android:name=".test.IDcardTestActivity" />
+        <activity android:name=".test.PullActivity"></activity>
     </application>
 
 </manifest>

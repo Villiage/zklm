@@ -66,4 +66,5 @@ dependencies {
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.1.6'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
 }

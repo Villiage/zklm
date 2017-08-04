@@ -78,9 +78,6 @@ public class LicenseAuditActivity extends BaseActivity implements View.OnClickLi
 
     private Context context;
 
-
-
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

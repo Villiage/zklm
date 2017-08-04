@@ -110,8 +110,7 @@ public class BitmapUtil {
             format = Bitmap.CompressFormat.PNG;
         }
 
-        int size = BitmapUtil.getBitmapByteSize(bitmap);
-        Log.d(TAG, "bitsize" + size );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(format, 80, baos);
         byte[] buff = baos.toByteArray();

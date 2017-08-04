@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.fxlc.zklm.MyApplication;
 import com.fxlc.zklm.bean.User;
+import com.fxlc.zklm.test.PullActivity;
 
 public class SplashActivity extends Activity {
 

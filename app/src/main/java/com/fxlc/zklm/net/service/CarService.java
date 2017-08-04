@@ -1,5 +1,6 @@
 package com.fxlc.zklm.net.service;
 
+import com.fxlc.zklm.bean.MyCars;
 import com.fxlc.zklm.net.HttpResult;
 
 import java.util.Map;
@@ -26,4 +27,6 @@ public interface CarService {
 
     @GET("base/getTruck")
     Call<ResponseBody> getTrucks();
+    @GET("base/getTruck")
+    Call<HttpResult<MyCars>> getTrucksNew();
 }

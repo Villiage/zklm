@@ -1,6 +1,7 @@
 package com.fxlc.zklm.net.service;
 
 import com.fxlc.zklm.bean.Contact;
+import com.fxlc.zklm.bean.MyContact;
 import com.fxlc.zklm.net.HttpResult;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public interface ContactService {
     @POST("contact/saveContact")
     Call<HttpResult> addContact3 (@Query("contact") String contact);
     @GET("contact/list")
-    Call<ResponseBody>  getContact();
+    Call<HttpResult<MyContact>>  getContact();
     @GET("contact/update")
     Call<HttpResult>  update (@Query("id") String id, @Query("name")String name ,@Query("phone")String phone);
     @GET("contact/delete")

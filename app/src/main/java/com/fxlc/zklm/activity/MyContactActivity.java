@@ -1,17 +1,7 @@
 package com.fxlc.zklm.activity;
 
-import android.Manifest;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,45 +10,35 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.fxlc.zklm.BaseActivity;
+import com.fxlc.zklm.ListActiviity;
 import com.fxlc.zklm.MyApplication;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.Contact;
-import com.fxlc.zklm.bean.User;
+import com.fxlc.zklm.bean.MyContact;
+import com.fxlc.zklm.net.HttpCallback;
+import com.fxlc.zklm.net.HttpResult;
 import com.fxlc.zklm.net.service.ContactService;
 import com.fxlc.zklm.util.DialogUtil;
 import com.fxlc.zklm.util.DisplayUtil;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MyContactActivity extends BaseActivity implements View.OnClickListener {
+public class MyContactActivity extends ListActiviity implements View.OnClickListener {
     List<Contact> contactList = new ArrayList<>();
-    ListView listView;
     Dialog dialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_contact);
-        listView = (ListView) findViewById(R.id.list);
+        super.onCreate(savedInstanceState);
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -87,7 +67,7 @@ public class MyContactActivity extends BaseActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         title("我的联系人");
-        getContact();
+        loadData();
     }
 
     @Override
@@ -112,42 +92,32 @@ public class MyContactActivity extends BaseActivity implements View.OnClickListe
                 break;
         }
     }
-
-    private void getContact() {
+    @Override
+    public void loadData() {
         proDialog.show();
         Retrofit retrofit = MyApplication.getRetrofit();
 
         ContactService service = retrofit.create(ContactService.class);
-        Call<ResponseBody> call = service.getContact();
-        call.enqueue(new Callback<ResponseBody>() {
+
+        Call<HttpResult<MyContact>> call = service.getContact();
+
+        call.enqueue(new HttpCallback<MyContact>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                 proDialog.dismiss();
-                try {
-                    if (response.isSuccessful()) {
-                        String resultStr = response.body().string();
-
-                        JSONObject json = new JSONObject(resultStr);
-                        String conJson = json.getJSONObject("body").getString("contact");
-                        contactList = new Gson().fromJson(conJson, new TypeToken<List<Contact>>(){}.getType());
-                        adapter = new ContactAdapter();
-                        listView.setAdapter(adapter);
-
-                    }
-
-                    } catch(IOException e){
-                        e.printStackTrace();
-                    } catch(JSONException e){
-                        e.printStackTrace();
-                    }
+            public void onSuccess(MyContact myContact) {
+                proDialog.dismiss();
+                contactList = myContact.getContact();
+                if (contactList != null && !contactList.isEmpty()){
+                    showDataView();
+                    adapter = new ContactAdapter();
+                    listView.setAdapter(adapter);
+                }else {
+                    showEmptyView();
                 }
-
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
             }
         });
+
+
     }
 
     private ContactAdapter adapter;

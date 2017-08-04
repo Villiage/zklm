@@ -2,6 +2,7 @@ package com.fxlc.zklm.activity;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fxlc.zklm.BaseActivity;
+import com.fxlc.zklm.ListActiviity;
 import com.fxlc.zklm.MyApplication;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.LoanHistory;
@@ -19,6 +21,7 @@ import com.fxlc.zklm.net.HttpResult;
 import com.fxlc.zklm.net.service.PayService;
 import com.fxlc.zklm.util.DialogUtil;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -28,8 +31,8 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 
-public class BorrowHistoryActivity extends BaseActivity implements View.OnClickListener {
-    ListView listView;
+public class BorrowHistoryActivity extends ListActiviity implements View.OnClickListener {
+
     MAdapter adapter;
     List<String> dataList = new ArrayList<>();
     Dialog d;
@@ -39,32 +42,24 @@ public class BorrowHistoryActivity extends BaseActivity implements View.OnClickL
     String mYear, mMonth;
     TextView curDateTx;
     Calendar calendar = Calendar.getInstance(Locale.CHINA);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_borrow_history);
-        listView = (ListView) findViewById(R.id.list);
-        curDateTx = (TextView) findViewById(R.id.curdate);
-        (calendarV = findViewById(R.id.selDate)).setOnClickListener(this);
+        super.onCreate(savedInstanceState);
+
+
         adapter = new MAdapter();
         listView.setAdapter(adapter);
 
+        curDateTx = (TextView) findViewById(R.id.curdate);
+        (calendarV = findViewById(R.id.selDate)).setOnClickListener(this);
 
-        d = DialogUtil.createDateDialog(this, Arrays.asList(yArr), Arrays.asList(mArr), new DialogUtil.DateSelLisener() {
-            @Override
-            public void onSel(String year, String month) {
-                d.dismiss();
-                mYear = year;
-                mMonth = month;
-                curDateTx.setText(mYear + "年"+ mMonth + "月");
-                loadData();
+        mYear = calendar.get(Calendar.YEAR) + "";
+        mMonth = (calendar.get(Calendar.MONTH) + 1) + "";
+        curDateTx.setText(mYear + "年" + mMonth + "月");
 
-            }
-        });
-        mYear =  calendar.get(Calendar.YEAR) +"";
-        mMonth =  (calendar.get(Calendar.MONTH)  + 1) +"";
-
-        curDateTx.setText(mYear + "年"+ mMonth + "月");
+        initDialog();
         loadData();
     }
 
@@ -72,42 +67,51 @@ public class BorrowHistoryActivity extends BaseActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         title("贷款明细");
+
+
     }
 
-    private void loadData() {
+    @Override
+    public void loadData() {
         proDialog.show();
         Retrofit retrofit = MyApplication.getRetrofit();
 
         PayService service = retrofit.create(PayService.class);
 
-        Call<HttpResult<LoanHistory>> call = service.loanList(mYear,mMonth);
+        Call<HttpResult<LoanHistory>> call = service.loanList(mYear, mMonth);
 
         call.enqueue(new HttpCallback<LoanHistory>() {
             @Override
             public void onSuccess(LoanHistory loanHistory) {
-                  proDialog.dismiss();
-                 List<ListBean> dataList = new ArrayList<ListBean>();
-                 List<LoanHistory.LoanBean>     loanList = loanHistory.getLoanlist();
-                for (LoanHistory.LoanBean loanBean : loanList) {
-                      ListBean loan = new ListBean();
-                    loan.setId(loanBean.getId());
-                    loan.setLabel("借款");
-                    loan.setAmount(loanBean.getMoney());
-                    loan.setDate(loanBean.getLoantime());
-                      dataList.add(loan);
+                proDialog.dismiss();
+                List<ListBean> dataList = new ArrayList<ListBean>();
+                List<LoanHistory.LoanBean> loanList = loanHistory.getLoanlist();
+                if (loanList != null && loanList.size() > 0) {
+                    for (LoanHistory.LoanBean loanBean : loanList) {
+                        ListBean loan = new ListBean();
+                        loan.setId(loanBean.getId());
+                        loan.setLabel("借款");
+                        loan.setAmount(loanBean.getMoney());
+                        loan.setDate(loanBean.getLoantime());
+                        dataList.add(loan);
 //                      bean.setStatu(loanBean.getStatus());
-                      List<LoanHistory.LoanBean.RepayBean> repayList = loanBean.getRepaylist();
-                    for (LoanHistory.LoanBean.RepayBean repayBean : repayList) {
-                        ListBean repay = new ListBean();
-                        repay.setId(repayBean.getId());
-                        repay.setLabel("还款");
-                        repay.setAmount(repayBean.getRepaymoney());
-                        repay.setDate(repayBean.getRepaytime());
-                        dataList.add(repay);
-                    }
+                        List<LoanHistory.LoanBean.RepayBean> repayList = loanBean.getRepaylist();
+                        for (LoanHistory.LoanBean.RepayBean repayBean : repayList) {
+                            ListBean repay = new ListBean();
+                            repay.setId(repayBean.getId());
+                            repay.setLabel("还款");
+                            repay.setAmount(repayBean.getRepaymoney());
+                            repay.setDate(repayBean.getRepaytime());
+                            dataList.add(repay);
+                        }
 
+                    }
+                    showDataView();
+                    adapter.setDataList(dataList);
+                } else {
+                    showEmptyView();
                 }
-                adapter.setDataList(dataList);
+
 
             }
 
@@ -119,6 +123,22 @@ public class BorrowHistoryActivity extends BaseActivity implements View.OnClickL
         });
 
     }
+
+    private void  initDialog(){
+
+        d = DialogUtil.createDateDialog(this, Arrays.asList(yArr), Arrays.asList(mArr), new DialogUtil.DateSelLisener() {
+            @Override
+            public void onSel(String year, String month) {
+                d.dismiss();
+                mYear = year;
+                mMonth = month;
+                curDateTx.setText(mYear + "年" + mMonth + "月");
+                loadData();
+
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -181,7 +201,8 @@ public class BorrowHistoryActivity extends BaseActivity implements View.OnClickL
         TextView labelTx, dateTx, amountTx;
 
     }
-    class ListBean{
+
+    class ListBean {
         String label;
         String id;
         String amount;

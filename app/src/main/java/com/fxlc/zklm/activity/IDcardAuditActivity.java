@@ -61,9 +61,9 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
     public static String faceTempFile = "face_temp.jpg";
     public static String backTempFile = "back_temp.jpg";
     public File captureFile;
-    private String facePath,backPath;
-    private byte[] faceContent,backContent;
-    private  boolean faceSuccess,backSuccess;
+    private String facePath, backPath;
+    private byte[] faceContent, backContent;
+    private boolean faceSuccess, backSuccess;
     private ImageView faceImg, backImg;
     private int type = 1;
     IDcard idcard = new IDcard();
@@ -78,7 +78,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == -1){
+            if (msg.what == -1) {
                 toast("照片识别失败，请重新上传");
                 return;
             }
@@ -109,7 +109,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
                 try {
                     outputObj = new JSONObject(dataValue);
                     if (outputObj.getBoolean("success")) {
-                         backSuccess = true;
+                        backSuccess = true;
                         idcard.setIssue(outputObj.getString("issue"));
                         issueTxt.setText(idcard.getIssue());
 
@@ -164,19 +164,19 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_face:
-                    type = 1;
-                    choiceDialog.show();
+                type = 1;
+                choiceDialog.show();
                 break;
             case R.id.img_back:
-                    type = 2;
-                    choiceDialog.show();
+                type = 2;
+                choiceDialog.show();
                 break;
 
             case R.id.verify:
-                  if (faceSuccess && backSuccess)
-                      submit();
+                if (faceSuccess && backSuccess)
+                    submit();
                 else
-                    Toast.makeText(context,"照片信息不完整或不清晰，请重新选取",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "照片信息不完整或不清晰，请重新选取", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.dialog_item1:
                 choiceDialog.dismiss();
@@ -186,7 +186,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.dialog_item2:
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
+                        new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
                 choiceDialog.dismiss();
                 break;
             case R.id.dialog_close:
@@ -196,11 +196,11 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void photo(){
+    private void photo() {
         faceTempFile += System.currentTimeMillis();
         backTempFile += System.currentTimeMillis();
         Intent takephoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        captureFile = FileUtil.getSaveFile(ctx, type == 1?faceTempFile:backTempFile);
+        captureFile = FileUtil.getSaveFile(ctx, type == 1 ? faceTempFile : backTempFile);
         Uri uri = Uri.fromFile(captureFile);
         takephoto.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(takephoto, CAPTURE_CODE);
@@ -216,9 +216,9 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
         final String path = "/rest/160601/ocr/ocr_idcard.json";
         final String appcode = "60091d0fb1a648459827272c0abf7909";
 
-        byte[] content = BitmapUtil.cpPicToByte(photoPath,200);
+        byte[] content = BitmapUtil.cpPicToByte(photoPath, 200);
         if (type == 1) faceContent = content;
-        else  if (type == 2) backContent = content;
+        else if (type == 2) backContent = content;
         String imgBase64 = android.util.Base64.encodeToString(content, android.util.Base64.DEFAULT);
 
         final JSONObject requestObj = new JSONObject();
@@ -285,18 +285,19 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
 
 
     }
-    public void submit(){
+
+    public void submit() {
         proDialog.show();
         user = MyApplication.getUser();
         retrofit = MyApplication.getRetrofit();
-        UserService  service =  retrofit.create(UserService.class);
+        UserService service = retrofit.create(UserService.class);
         HashMap map = new HashMap();
 
-        map.put("id",user.getId());
-        map.put("name",idcard.getName());
-        map.put("cardnumber",idcard.getNum());
-        map.put("cardorgan",idcard.getIssue());
-        map.put("pstatus",2);
+        map.put("id", user.getId());
+        map.put("name", idcard.getName());
+        map.put("cardnumber", idcard.getNum());
+        map.put("cardorgan", idcard.getIssue());
+        map.put("pstatus", 2);
         File faceFile = new File(facePath);
         File backFile = new File(backPath);
 
@@ -309,27 +310,27 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
         MultipartBody.Part backPart =
                 MultipartBody.Part.createFormData("pcardreverse", backFile.getName(), backBody);
 
-        retrofit2.Call<HttpResult> call = service.saveIDcard2(facePart,backPart,map);
+        retrofit2.Call<HttpResult> call = service.saveIDcard2(facePart, backPart, map);
         call.enqueue(new retrofit2.Callback<HttpResult>() {
             @Override
             public void onResponse(retrofit2.Call<HttpResult> call, retrofit2.Response<HttpResult> response) {
-                 proDialog.dismiss();
+                proDialog.dismiss();
 
 
-                 if (response.body().isSuccess()){
-                     user.setName(idcard.getName());
-                     save("user", new Gson().toJson(user));
-                     MyApplication.setUser(user);
-                     finish();
-                 }
+                if (response.body().isSuccess()) {
+                    user.setName(idcard.getName());
+                    save("user", new Gson().toJson(user));
+                    MyApplication.setUser(user);
+                    finish();
+                }
 
 
             }
 
             @Override
             public void onFailure(retrofit2.Call<HttpResult> call, Throwable t) {
-                     toast(netErrorMsg);
-                      proDialog.dismiss();
+                toast(netErrorMsg);
+                proDialog.dismiss();
             }
         });
 
@@ -357,7 +358,7 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
         if (requestCode == 102) {
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                  photo();
+                photo();
             } else {
                 // Permission Denied
                 Toast.makeText(this, "请在 设置->权限 中授权拍照", Toast.LENGTH_SHORT).show();
@@ -379,22 +380,17 @@ public class IDcardAuditActivity extends BaseActivity implements View.OnClickLis
             if (requestCode == CAPTURE_CODE) {
                 photoPath = captureFile.getPath();
             }
-            Log.d(TAG,photoPath);
-           if (type ==1) {
-               Glide.with(context).load(facePath = photoPath).fitCenter().into(faceImg);
+            Log.d(TAG, photoPath);
+            if (type == 1) {
+                Glide.with(context).load(facePath = photoPath).fitCenter().into(faceImg);
 
-           }
-            else if (type== 2) {
-               Glide.with(context).load(backPath = photoPath).fitCenter().into(backImg);
-           }
-           readCard(photoPath);
+            } else if (type == 2) {
+                Glide.with(context).load(backPath = photoPath).fitCenter().into(backImg);
+            }
+            readCard(photoPath);
         }
 
     }
-
-
-
-
 
 
 }

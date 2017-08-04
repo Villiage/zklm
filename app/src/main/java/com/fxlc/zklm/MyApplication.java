@@ -122,6 +122,7 @@ public class MyApplication extends Application {
     }
 
     public void initCarsData() {
+
            CarDao dao = new CarDao(getApplicationContext());
         if (!dao.hasData()) {
 

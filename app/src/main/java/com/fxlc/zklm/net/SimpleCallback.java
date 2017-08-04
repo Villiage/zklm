@@ -26,7 +26,7 @@ public abstract class SimpleCallback implements Callback<HttpResult> {
             if (result.isSuccess()){
                 onSuccess(result);
             }else {
-                onFailure(call,new MyThrowable());
+                onFailure(call,new MyThrowable(result.getErrorCode()));
                 Toast.makeText(MyApplication.getInstance().getApplicationContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
             }
         }

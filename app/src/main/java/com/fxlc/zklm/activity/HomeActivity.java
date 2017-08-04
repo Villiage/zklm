@@ -22,14 +22,18 @@ import com.fxlc.zklm.BaseActivity;
 import com.fxlc.zklm.MyApplication;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.Contact;
+import com.fxlc.zklm.bean.MyContact;
 import com.fxlc.zklm.bean.Wallet;
 import com.fxlc.zklm.net.HttpCallback;
 import com.fxlc.zklm.net.HttpResult;
+import com.fxlc.zklm.net.MyThrowable;
 import com.fxlc.zklm.net.service.ContactService;
 import com.fxlc.zklm.net.service.PayService;
 import com.fxlc.zklm.util.DialogUtil;
+import com.fxlc.zklm.util.TransformationUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.journeyapps.barcodescanner.ViewfinderView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +41,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadFactory;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -92,7 +97,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         findViewById(R.id.add_contact).setOnClickListener(this);
         retrofit = MyApplication.getRetrofit();
         dialog = new AlertDialog.Builder(this).create();
-
+        initDialog();
     }
 
     @Override
@@ -104,28 +109,30 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             getContact();
         } else {
             dialog.setMessage("您还未登陆");
-            dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "退出", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                    finish();
-                }
-            });
-            dialog.setButton(AlertDialog.BUTTON_POSITIVE, "登陆", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                    it.setClass(ctx,LoginActivity.class);
-                    startActivity(it);
-                }
-            });
-            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
-
-//            LoginActivity.toThis();
         }
     }
+    private void initDialog(){
 
+
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "退出", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                finish();
+            }
+        });
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "登陆", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                it.setClass(ctx,LoginActivity.class);
+                startActivity(it);
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+
+    }
     private void getContactStatu(final Contact contact) {
 
         ContactService service = retrofit.create(ContactService.class);
@@ -204,10 +211,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             case R.id.dialog_item2:
 
                 break;
-            case R.id.add_contact:
 
-
-                break;
         }
     }
 
@@ -219,11 +223,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         call.enqueue(new HttpCallback<Wallet>() {
             @Override
             public void onSuccess(Wallet wallet) {
-
-
                 totalMoney.setText("总额度 " + wallet.getSummoney());
                 usableMoney.setText(wallet.getUsablemoney());
+            }
 
+            @Override
+            public void onFailure(Call call, Throwable t) {
 
             }
         });
@@ -231,43 +236,42 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     private void getContact() {
 
-
         ContactService service = retrofit.create(ContactService.class);
-        Call<ResponseBody> call = service.getContact();
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<HttpResult<MyContact>> call = service.getContact();
+        call.enqueue(new HttpCallback<MyContact>() {
+
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onSuccess(MyContact myContact) {
 
-                try {
-                    String resultStr = response.body().string();
-                    JSONObject json = new JSONObject(resultStr);
-                    if (json.getBoolean("success")) {
-                        String conJson = json.getJSONObject("body").getString("contact");
-                        contactList = new Gson().fromJson(conJson, new TypeToken<List<Contact>>() {
-                        }.getType());
-                        if (contactList != null && contactList.size() > 0) {
-                            emptyView.setVisibility(View.GONE);
-                            adapter = new ContactAdapter();
-                            listView.setAdapter(adapter);
-                        }
-                    } else {
-                        emptyView.setVisibility(View.VISIBLE);
-                    }
+                if (myContact.getContact() != null&& myContact.getContact().size() > 0){
+                    contactList = myContact.getContact();
+                    emptyView.setVisibility(View.GONE);
+                    adapter = new ContactAdapter();
+                    listView.setAdapter(adapter);
 
+                }else {
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    emptyView.setVisibility(View.VISIBLE);
                 }
             }
 
-
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call call, Throwable t) {
+
+                if (t instanceof MyThrowable){
+
+                    MyThrowable throwable = (MyThrowable) t;
+                    String  code =  throwable.getErrorCode();
+                    if (code.equals("01")){
+                        dialog.setMessage("登陆已过期");
+                        dialog.show();
+                    }
+
+                }
 
             }
         });
+
     }
 
 

@@ -5,9 +5,20 @@ package com.fxlc.zklm.net;
  */
 
 public class MyThrowable extends Throwable{
+    public MyThrowable( String errorCode) {
 
+        this.errorCode = errorCode;
+    }
+
+    private String errorCode;
     @Override
     public String getMessage() {
         return " response data error";
+    }
+
+    public String  getErrorCode(){
+
+        return errorCode;
+
     }
 }

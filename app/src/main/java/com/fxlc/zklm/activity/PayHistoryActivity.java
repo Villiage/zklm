@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fxlc.zklm.BaseActivity;
+import com.fxlc.zklm.ListActiviity;
 import com.fxlc.zklm.MyApplication;
 import com.fxlc.zklm.R;
 import com.fxlc.zklm.bean.PayHistory;
@@ -29,8 +30,8 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 
-public class PayHistoryActivity extends BaseActivity implements View.OnClickListener {
-    ListView listView;
+public class PayHistoryActivity extends ListActiviity implements View.OnClickListener {
+
     MAdapter adapter;
     List<String> dataList = new ArrayList<>();
     Dialog d;
@@ -43,11 +44,11 @@ public class PayHistoryActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_history);
-        listView = (ListView) findViewById(R.id.list);
-        curDateTx = (TextView) findViewById(R.id.curdate);
-        (calendarV = findViewById(R.id.selDate)).setOnClickListener(this);
+        super.onCreate(savedInstanceState);
+
+
+
         adapter = new MAdapter();
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,17 +60,10 @@ public class PayHistoryActivity extends BaseActivity implements View.OnClickList
                 startActivity(it);
             }
         });
-        loadData();
-        d = DialogUtil.createDateDialog(this, Arrays.asList(yArr), Arrays.asList(mArr), new DialogUtil.DateSelLisener() {
-            @Override
-            public void onSel(String year, String month) {
-                d.dismiss();
-                mYear = year;
-                mMonth = month;
-                loadData();
 
-            }
-        });
+        curDateTx = (TextView) findViewById(R.id.curdate);
+        (calendarV = findViewById(R.id.selDate)).setOnClickListener(this);
+        createDialog();
         mYear = calendar.get(Calendar.YEAR) + "";
         mMonth = (calendar.get(Calendar.MONTH) + 1) + "";
 
@@ -82,8 +76,8 @@ public class PayHistoryActivity extends BaseActivity implements View.OnClickList
         super.onResume();
         title("支付明细");
     }
-
-    private void loadData() {
+    @Override
+    public void loadData() {
         proDialog.show();
         Retrofit retrofit = MyApplication.getRetrofit();
 
@@ -95,7 +89,13 @@ public class PayHistoryActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onSuccess(PayHistory payDetail) {
                 proDialog.dismiss();
-                adapter.setDataList(payDetail.getPaylist());
+                if (payDetail.getPaylist() != null && payDetail.getPaylist().size() > 0){
+                     showDataView();
+                     adapter.setDataList(payDetail.getPaylist());
+
+                }else {
+                    showEmptyView();
+                }
             }
 
             @Override
@@ -107,7 +107,19 @@ public class PayHistoryActivity extends BaseActivity implements View.OnClickList
 
 
     }
+     private void createDialog(){
 
+         d = DialogUtil.createDateDialog(this, Arrays.asList(yArr), Arrays.asList(mArr), new DialogUtil.DateSelLisener() {
+             @Override
+             public void onSel(String year, String month) {
+                 d.dismiss();
+                 mYear = year;
+                 mMonth = month;
+                 loadData();
+
+             }
+         });
+     }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
